@@ -17,15 +17,19 @@ def create_sale_dictionary():
     return bulbs_for_sale
 
 
-def create_order():
+def create_order(customer_name):
     # creates a dict representing a customer's annual standing order
     # keys are the bulb types and are type str
     # values are the number of bulbs in the order and are type int
+    # customer name is a str representing which customer is being serviced
     # returns the described dictionary
-    order = {
-        'daffodil': 50,
-        'tulip': 100
-    }
+    if customer_name == 'Mary':
+        order = {
+            'daffodil': 50,
+            'tulip': 100
+        }
+    else:
+        order = {}
     return order
 
 
@@ -93,7 +97,8 @@ def main():
     bulbs_for_sale = create_sale_dictionary()
 
     # Part 2: create customer order
-    mary_order = create_order()
+    customer_name = 'Mary'
+    mary_order = create_order(customer_name)
 
     # Part 3: update price based on price increase
     price_increase = 1.25

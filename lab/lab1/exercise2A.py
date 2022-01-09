@@ -1,4 +1,4 @@
-# Exercise 2: Student's Choice
+# Exercise 2A: Student's Choice
 # reads the data in a text file where each line contains different info about a city and it's rainfall
 # reorganizes data into categories (50-60mm), (60-70mm), (70-80mm), (80-90mm), (90-100mm)
 # creates a new file with this reorganized info
