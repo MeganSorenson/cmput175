@@ -1,5 +1,6 @@
 # Exercise 1: Python Warm Up
-# a program for Bluebell Greenhouses that prints a purchase receipt
+# a program for Bluebell Greenhouses that prints a purchase receipt for customers
+# uses mary's annual order as an example
 
 # Part 1
 #   dict representing the spring flower bulbs (keys) sold and their price per bulb (values)
