@@ -63,7 +63,7 @@ def main():
     contents = get_contents(filename)
     # group magnitude and date data by region
     contents_by_region = group_by_region(contents)
-    # write new file with data nd magnitude data for each region
+    # write new file with data and magnitude data for each region
     new_filename = "earthquakefmt.txt"
     write_newfile(new_filename, contents_by_region)
 
