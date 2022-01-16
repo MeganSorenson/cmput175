@@ -50,7 +50,7 @@ def decrypt(filename):
     # keep in mind that unicode are represented as base 10 not hexidecimal
     for character in encrypted_message:
         # deal with lowercase alphabet letters
-        if character.islower():
+        if character != " ":
             # get encrypted unicode of character
             encrypted_unicode = ord(character)
             # go backwards in unicode cipher number of times to find original unicode
@@ -68,7 +68,7 @@ def decrypt(filename):
             # add inital space to new message
             # only if there hasn'y already just been a space appended
             # accounts for inconsistent spacing between words
-            if encrypted_message[-1] != " ":
+            if decrypted_message[-1] != " ":
                 decrypted_message.append(" ")
 
     # print decrypted message
