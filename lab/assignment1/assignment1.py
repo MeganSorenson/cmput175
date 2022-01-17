@@ -44,8 +44,8 @@ def read_file_lines(filename, separator):
     # open and read file
     file = open(filename, 'r')
     contents = file.readlines()
-    for line in contents:
-        line = line.strip().split(separator)
+    for i in range(len(contents)):
+        contents[i] = contents[i].strip().split(separator)
     file.close()
 
     return contents
@@ -63,12 +63,10 @@ def extract_classroom_info():
     # create dictionary to add to using the file contents
     classroom_info = {}
 
-    for line in contents:
-        # split line info into int's individual components
-        line_contents = line.split(',')
+    for line_contents in contents:
         # get class number from the components and add student info appropriately to dictionary
         classroom = line_contents[2]
-        student_info = (line_contents[1], line_contents[0])
+        student_info = (line_contents[0], line_contents[1])
         # create new classrooom key if it doesn't already exist
         classroom_info[classroom] = classroom_info.get(
             classroom, [])
@@ -112,7 +110,7 @@ def add_up_borrowed_books(studentID):
     # get history of loans lines from borrowed.txt
     all_borrowed_books = read_file_lines('borrowers.txt', ';')
     # keep track of borrowed books for student
-    student_borrowed_books = {}
+    student_borrowed_books = set()
 
     for book in all_borrowed_books:
         if book[1] == studentID:  # if the student IDs match
