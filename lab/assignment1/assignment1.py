@@ -28,10 +28,9 @@ def main():
 
     # for each classroom, create the tables of borrowed books and owed amounts, and append it to a file
     for classroom, students in classroom_info.items():
-        # create table 1 with all the books that haven't been returns for each classroom and append to file
-        create_table_one(classroom, students)
-    # create table 2 with the amount due by the students
-    # create_table_two()
+        # create dictionary of student_name: list of [unreturned_bookID, due date]
+        unreturned_books = create_unreturned_book_dictionary(students)
+        print(unreturned_books)
 
 
 def read_file_lines(filename, separator):
@@ -76,47 +75,47 @@ def extract_classroom_info():
     return classroom_info
 
 
-def create_table_one(classroom, students):
+def create_unreturned_book_dictionary(students):
     '''
-    -lists all books that haven't been returned, creates a table of info appended to a specified file for each classroom
-        first col of table is student name, second col is title of borrowed book, third col is due date
-        line at end indicates total number of borrowed books for each classroom
-    -info gathered from borrowed.txt which contains the history of all loans
-        line --> bookID;studentID;borrow_date;return_date
-        date in YYMMDD
-    -info also gathered from returns.txt which contains info about the returns
-        line --> bookID;studentID;returned_date;book_state
-        date in YYMMDD
-        book_state --> 0 = good, 1 = lost, 2 = lost and paid, 3 = damaged and paid, 
-        otherwise damaged and need replacement but not paid
-    -classroom is a str of the classroom number
-    -students is a list of tuples, each containing (studentID, student_name) as strings
+    -keeps track of the unreturned books of each student and adds them to a dictionary
+    -keys are student name (str), values are list of lists of (book ID, due date) (str)
+    -returns this dictionaru
     '''
-
+    unreturned_books = {}
     for student in students:
         studentID = student[0]
+        student_name = student[1]
         # calculate the books that were borrowed but not returned by the student
-        borrowed_books = add_up_borrowed_books(studentID)
-        unreturned_books = remove_returned_books(studentID, borrowed_books)
-        print(unreturned_books)
+        student_unreturned_books = get_unreturned_books(studentID)
+        # add info to dictionary
+        if len(student_unreturned_books) > 0:
+            unreturned_books[student_name] = student_unreturned_books
+    return unreturned_books
 
 
-def add_up_borrowed_books(studentID):
+def get_unreturned_books(studentID):
     '''
     -adds up all the borrowed bookIDs for a specific student to a set
     -studentID is a str representing an individual student ID
-    -returns a set of all the bookIDs borrowed by that student
+    -returns a list of lists of all the (bookIDs, due dates) borrowed by that student
     '''
     # get history of loans lines from borrowed.txt
     all_borrowed_books = read_file_lines('borrowers.txt', ';')
     # keep track of borrowed books for student
     student_borrowed_books = set()
-
     for book in all_borrowed_books:
         if book[1] == studentID:  # if the student IDs match
             student_borrowed_books.add(book[0])  # add book to set
 
-    return student_borrowed_books
+    # get rid of returned books
+    student_unreturned_books = list(
+        remove_returned_books(studentID, student_borrowed_books))
+
+    # add due dates to unreturned books
+    student_unreturned_books = get_due_dates(
+        all_borrowed_books, student_unreturned_books)
+
+    return student_unreturned_books
 
 
 def remove_returned_books(studentID, borrowed_books):
@@ -134,6 +133,17 @@ def remove_returned_books(studentID, borrowed_books):
             borrowed_books.remove(book[0])  # remove book to set
 
     return borrowed_books
+
+
+def get_due_dates(all_borrowed_books, student_unreturned_books):
+    new_unreturned_list = []
+    for book in student_unreturned_books:
+        for book_info in all_borrowed_books:
+            if book == book_info[0]:  # if book IDs match
+                # add list of (book_ID, due date) to new list
+                new_unreturned_list.append([book, book_info[3]])
+
+    return new_unreturned_list
 
 
 def create_table_two():
