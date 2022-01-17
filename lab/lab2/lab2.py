@@ -50,7 +50,7 @@ def decrypt(filename):
     # keep in mind that unicode are represented as base 10 not hexidecimal
     for character in encrypted_message:
         # deal with lowercase alphabet letters
-        if character != " ":
+        if character.islower():
             # get encrypted unicode of character
             encrypted_unicode = ord(character)
             # go backwards in unicode cipher number of times to find original unicode

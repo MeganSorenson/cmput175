@@ -69,16 +69,55 @@ class Template:
 
 def main():
     # words.txt is a file that contains a list of word and hint
+    infile = open('words.txt')
+    alist = infile.readlines()
+    infile.close()
 
-    # Choose a random entry
+    play_again = True
+    while play_again:
+        # Choose a random entry
+        entry = random.choice(alist)
+        entry = entry.strip()
 
-    # Separate the word and the hint
+        # Separate the word and the hint
+        word, hint = entry.split(',')
 
-    # Display the hint
+        # Display the hint
+        print(hint)
 
-    # Initialization
+        # Initialization
+        template = Template(len(word))
+        template.show()
+        hangman = Gallows()
+        incorrect = []
+        gameOver = False
 
-    # Start  one round of the game
+        # Start  one round of the game
+        while not gameOver:
+            guess = input('Enter a letter : ').lower()
+            # input validation
+            while guess in incorrect or template.existsIn(guess):
+                guess = input('Enter a letter : ').lower()
+            # processing
+            # attempting to update the template
+            result = template.update(word, guess)
+            template.show()
+            if result == False:
+                hangman.increment()
+                hangman.show()
+                incorrect.append(guess)
+                incorrect.sort()
+                print(';'.join(incorrect))
+            if template.isComplete() or hangman.get() == 5:
+                gameOver = True
+                if template.isComplete():
+                    print('Congratulations')
+                else:
+                    print('R.I.P')
+                    print('The word was ', word)
+        reply = input('Play again ? y/N ').lower()
+        if reply != 'y':
+            play_again = False
 
 
 main()

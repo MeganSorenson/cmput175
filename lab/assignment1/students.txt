@@ -1,0 +1,6 @@
+S983342,Suzanne Foster,2B
+S981123,Eric Xu,2B
+S980127,Hua Li,3A
+S986654,Myriam Salah,2A
+S982234,Ali Rabbany,3B
+S987654,Kevin Kelly,3A
