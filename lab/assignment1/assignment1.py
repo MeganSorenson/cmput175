@@ -357,9 +357,18 @@ def create_table_two(unpaid_books):
 def display_classroom_totals(classroom, total_unreturned, total_unpaid):
     '''
     prints the class number, total books borrowed by the class, and total amount due of the class;
-    does this for every class
+    classroom is a str representing the classroom number;
+    total_unreturned is an int representing the total number of books unreturned in a classroom;
+    total_unpaid is a float representing the total dollar amount owed by the classroom;
+    returns NoneType
     '''
-    pass
+    unpaid_dollars_rounded = '${total:.2f}'.format(total=total_unpaid)
+
+    print('Class: {classroom}'.format(classroom=classroom))
+    print('Total books currently borrowed: {unreturned}'.format(
+        unreturned=total_unreturned))
+    print('Total amount due for books: {total}'.format(
+        total=unpaid_dollars_rounded))
 
 
 main()
