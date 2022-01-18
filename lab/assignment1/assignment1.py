@@ -1,6 +1,3 @@
-# books.txt contains info about all books in the library
-#   bookID#title#author_names#dollar_value
-
 # assumptions:
 #   no whitespace at beginning of line
 #   no blank lines in files
@@ -16,9 +13,10 @@ def main():
 
     # for each classroom, create the tables of borrowed books and owed amounts, and append it to a file
     for classroom, students in classroom_info.items():
-        # create dictionary of student_name: list of [unreturned_bookID, due date]
+        # create dictionary of student_name: list of [unreturned_book_name, due_date]
         unreturned_books = create_unreturned_book_dictionary(students)
-        print(unreturned_books)
+        # create the first table with the unreturned book info and appedn to file
+        create_table_one(classroom, unreturned_books)
 
 
 def read_file_lines(filename, separator):
@@ -66,7 +64,7 @@ def extract_classroom_info():
 def create_unreturned_book_dictionary(students):
     '''
     keeps track of the unreturned books of each student and adds them to a dictionary;
-    keys are student name (str), values are list of lists of (book ID, due date) (str);
+    keys are student name (str), values are list of lists of (book name, due date) (str);
     returns this dictionary
     '''
     unreturned_books = {}
@@ -163,6 +161,61 @@ def get_due_date(bookID):
     for book_info in all_borrowed_books:
         if bookID == book_info[0]:  # if book IDs match
             return book_info[3]  # return due date
+
+
+def create_table_one(classroom, unreturned_books):
+    '''
+    creates a table of unreturned book info for a classroom and appends it to a file named standing.txt;
+    first column of table is student names sorted alphabetically;
+    second column of table is names of unreturned books;
+    third column of table is due dates of unreturned books;
+    last row is total books unreturned for that classroom;
+    classroom is a str representing the classroom number;
+    unreturned books is a dictionary of student_name : list of [unreturned_book_names, due_dates]
+    '''
+    # create table structure elements
+    first_col_width = 16
+    second_col_width = 35
+    third_col_width = 14
+    horizontal_border = ('+' + ('-' * (first_col_width + 2)) + '+' +
+                         ('-' * (second_col_width + 2)) + '+' + ('-' * (third_col_width + 2)) + '+')
+
+    # write items to file
+    file = open('standing.txt', 'a')
+    file.write('Class: {number}\n'.format(number=classroom))  # table title
+    file.write('{border}\n'.format(border=horizontal_border))  # top of table
+    file.write('| {col1_label:<16.16} | {col2_label:<35.35} | {col3_label:<14.14} |\n'.format(col1_label='Student Name',
+               col2_label='Book', col3_label='Due Date'))  # column names
+    file.write('{}\n'.format(horizontal_border))
+    # write a row for each unreturned book
+    for student, book_info in unreturned_books.items():
+        for book in book_info:
+            # convert due date from numerical to written format
+            date = convert_date(book[1])
+            file.write('| {student_name:<16.16} | {book_name:<35.35} | {due_date:<14.14} |\n'.format(
+                student_name=student, book_name=book[0], due_date=date))  # unreturned book row
+    file.write('{border}\n'.format(border=horizontal_border))
+
+    file.close
+
+
+def convert_date(date):
+    '''
+    converts a date from YYMMDD to Mon Day, Year;
+    date is a string representing a YYMMDD date;
+    returns a str of the date in converted format
+    '''
+    month_conversions = {
+        '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr',
+        '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug',
+        '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'
+    }
+
+    year = '20' + date[0:2]
+    month = month_conversions[date[2:4]]
+    day = date[4:]
+
+    return '{month} {day}, {year}'.format(month=month, day=day, year=year)
 
 
 def create_table_two():
