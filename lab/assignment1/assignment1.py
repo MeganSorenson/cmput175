@@ -188,13 +188,20 @@ def create_table_one(classroom, unreturned_books):
                col2_label='Book', col3_label='Due Date'))  # column names
     file.write('{}\n'.format(horizontal_border))
     # write a row for each unreturned book
+    total_number_unreturned = 0
     for student, book_info in unreturned_books.items():
+        total_number_unreturned += len(book_info)
         for book in book_info:
             # convert due date from numerical to written format
             date = convert_date(book[1])
             file.write('| {student_name:<16.16} | {book_name:<35.35} | {due_date:<14.14} |\n'.format(
                 student_name=student, book_name=book[0], due_date=date))  # unreturned book row
-    file.write('{border}\n'.format(border=horizontal_border))
+    if total_number_unreturned > 0:  # only add another spearator is there were unreturned book rows
+        file.write('+' + ('-' * (first_col_width + 2)) + '-' + ('-' * (second_col_width + 2)) +
+                   '+' + ('-' * (third_col_width + 2)) + '+' + '\n')  # horizontal border above total row
+    file.write('| {row_label:<54} | {total:>14} |\n'.format(
+        row_label='Total Books', total=str(total_number_unreturned)))  # total unreturned row
+    file.write('{border}\n'.format(border=horizontal_border))  # table bottom
 
     file.close
 
