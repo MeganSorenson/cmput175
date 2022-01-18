@@ -15,8 +15,17 @@ def main():
     for classroom, students in classroom_info.items():
         # create dictionary of student_name: list of [unreturned_book_name, due_date]
         unreturned_books = create_unreturned_book_dictionary(students)
-        # create the first table with the unreturned book info and appedn to file
-        create_table_one(classroom, unreturned_books)
+        # create the first table with the unreturned book info and append to standing.txt file
+        # also get the total number of books unreturned by the classroom's students
+        unreturned_total = create_table_one(
+            classroom, unreturned_books)
+        # create dictionary of student_name: owed_dollar_total
+        unpaid_books = create_unpaid_book_dictionary(students)
+        # create thhe second table with the unpaid total info and append it to standing.txt file
+        # also gets total amount that the classroom's students still owe
+        unpaid_total = create_table_two(unpaid_books)
+        # display the classroom total unreturned and unpaid
+        display_classroom_totals(classroom, unreturned_total, unpaid_total)
 
 
 def read_file_lines(filename, separator):
@@ -65,6 +74,7 @@ def create_unreturned_book_dictionary(students):
     '''
     keeps track of the unreturned books of each student and adds them to a dictionary;
     keys are student name (str), values are list of lists of (book name, due date) (str);
+    students is a list of tuples of (student_ID, student_name) for a classroom
     returns this dictionary
     '''
     unreturned_books = {}
@@ -171,39 +181,51 @@ def create_table_one(classroom, unreturned_books):
     third column of table is due dates of unreturned books;
     last row is total books unreturned for that classroom;
     classroom is a str representing the classroom number;
-    unreturned books is a dictionary of student_name : list of [unreturned_book_names, due_dates]
+    unreturned books is a dictionary of student_name : list of [unreturned_book_names, due_dates];
+    returns and int of the total number of books unreturned by the class
     '''
     # create table structure elements
     first_col_width = 16
     second_col_width = 35
     third_col_width = 14
     horizontal_border = ('+' + ('-' * (first_col_width + 2)) + '+' +
-                         ('-' * (second_col_width + 2)) + '+' + ('-' * (third_col_width + 2)) + '+')
+                         ('-' * (second_col_width + 2)) + '+' + ('-' * (third_col_width)) + '+')
 
-    # write items to file
+    # write header of table to file
     file = open('standing.txt', 'a')
     file.write('Class: {number}\n'.format(number=classroom))  # table title
     file.write('{border}\n'.format(border=horizontal_border))  # top of table
-    file.write('| {col1_label:<16.16} | {col2_label:<35.35} | {col3_label:<14.14} |\n'.format(col1_label='Student Name',
+    file.write('| {col1_label:<16.16} | {col2_label:<35.35} | {col3_label:<12.12} |\n'.format(col1_label='Student Name',
                col2_label='Book', col3_label='Due Date'))  # column names
     file.write('{}\n'.format(horizontal_border))
-    # write a row for each unreturned book
+
+    # order students alphabetically
+    sorted_students = list(unreturned_books.keys())
+    sorted_students.sort()
+
+    # write a row for each unreturned book using the alphabeticlaly ordered students list
     total_number_unreturned = 0
-    for student, book_info in unreturned_books.items():
+    for student in sorted_students:
+        book_info = unreturned_books[student]
+        # keep track of the classroom's total unreturned
         total_number_unreturned += len(book_info)
         for book in book_info:
             # convert due date from numerical to written format
             date = convert_date(book[1])
-            file.write('| {student_name:<16.16} | {book_name:<35.35} | {due_date:<14.14} |\n'.format(
+            file.write('| {student_name:<16.16} | {book_name:<35.35} | {due_date:^12.12} |\n'.format(
                 student_name=student, book_name=book[0], due_date=date))  # unreturned book row
+
+    # write footer of table to file
     if total_number_unreturned > 0:  # only add another spearator is there were unreturned book rows
         file.write('+' + ('-' * (first_col_width + 2)) + '-' + ('-' * (second_col_width + 2)) +
-                   '+' + ('-' * (third_col_width + 2)) + '+' + '\n')  # horizontal border above total row
-    file.write('| {row_label:<54} | {total:>14} |\n'.format(
+                   '+' + ('-' * (third_col_width)) + '+' + '\n')  # horizontal border above total row
+    file.write('| {row_label:<54} | {total:>12} |\n'.format(
         row_label='Total Books', total=str(total_number_unreturned)))  # total unreturned row
     file.write('{border}\n'.format(border=horizontal_border))  # table bottom
 
     file.close
+
+    return total_number_unreturned
 
 
 def convert_date(date):
@@ -217,7 +239,6 @@ def convert_date(date):
         '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug',
         '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'
     }
-
     year = '20' + date[0:2]
     month = month_conversions[date[2:4]]
     day = date[4:]
@@ -225,22 +246,115 @@ def convert_date(date):
     return '{month} {day}, {year}'.format(month=month, day=day, year=year)
 
 
-def create_table_two():
+def create_unpaid_book_dictionary(students):
     '''
-    contains the amount due by the students (sorted by student_name) and appends the table to a specified file for each classroom
-        -first col is student name, second col is total amount due
-        -line at end indicates the total amount due by the class' students;
-    student owes the cost of the book from book.txt
-        -line --> bookID#title#author_names#dollar_value;
-    student only owes if the book was lost or damaged but not paid (from returns.txt)
-        -line --> bookID;studentID;returned_date;book_state
-        -date in YYMMDD
-        -book_state --> 0 = good, 1 = lost, 2 = lost and paid, 3 = damaged and paid, otherwise damaged and need replacement but not paid
+    keeps track of the unpaid books of each student and adds them to a dictionary;
+    keys are student name (str), values are floats representing the total amount due (not rounded);
+    students is a list of tuples of (student_ID, student_name) for a classroom
+    returns this dictionary
     '''
-    pass
+    unpaid_books = {}
+    for student in students:
+        studentID = student[0]
+        student_name = student[1]
+        student_unpaid_total = get_unpaid_total(studentID)
+        if student_unpaid_total != 0:
+            # add info to dictionary
+            unpaid_books[student_name] = unpaid_books.get(
+                student_name, 0) + student_unpaid_total
+
+    return unpaid_books
 
 
-def display_classroom_totals():
+def get_unpaid_total(studentID):
+    '''
+    tallies up the total dollar amount unpaid by a student;
+    a student only owes money if the book was lost or damaged and not paid;
+    studentID is a str representing the ID of the student
+    returns a float representing the dollar amount still unpaid
+    '''
+    # get list of return info from returns.txt
+    all_returned_books = read_file_lines('returns.txt', ';')
+
+    # book conditions that indicate that payment is not required
+    no_need_to_pay = ('0', '1', '3')
+
+    unpaid_total = 0
+    for book in all_returned_books:
+        if book[1] == studentID:  # if IDs match
+            # if the book need to be paid for, add book price to total
+            if book[3] not in no_need_to_pay:
+                unpaid_total += get_book_price(book[0])
+
+    return unpaid_total
+
+
+def get_book_price(bookID):
+    '''
+    gets the price of a book from books.txt based on a bookID;
+    bookID is a str representing the ID of the book;
+    returns a float representing the book price if the book exists, otherwide returns NoneType
+    '''
+    # get list of book info from books.txt
+    all_book_info = read_file_lines('books.txt', '#')
+
+    for book in all_book_info:
+        if book[0] == bookID:  # if IDs match
+            return float(book[3])  # return book price
+
+
+def create_table_two(unpaid_books):
+    '''
+    contains the amount due by the students (sorted by student_name) and appends the table to a specified file for each classroom;
+    first col is student name, second col is total amount due;
+    line at end indicates the total amount due by the class' students;
+    student owes the cost of the book from book.txt;
+    student only owes if the book was lost or damaged but not paid (from returns.txt);
+    classroom is a str representing the classroom number;
+    unpaid_books is a dictionary of student_name : float of total unpaid dollar amount;
+    returns a float of the total amount unpaid by the classroom
+    '''
+    # create table structure elements
+    first_col_width = 16
+    second_col_width = 10
+    horizontal_border = ('+' + ('-' * (first_col_width + 2)) +
+                         '+' + ('-' * (second_col_width)) + '+')
+    # write header of table to file
+    file = open('standing.txt', 'a')
+    file.write('{border}\n'.format(border=horizontal_border))  # top of table
+    file.write('| {col1_label:<16.16} | {col2_label:<8.8} |\n'.format(
+        col1_label='Student Name', col2_label='Due'))  # column names
+    file.write('{}\n'.format(horizontal_border))
+
+    # order students alphabetically
+    sorted_students = list(unpaid_books.keys())
+    sorted_students.sort()
+
+    # write a row for each unpaid book using the alphabeticlaly ordered students list
+    total_dollars_unpaid = 0
+    for student in sorted_students:
+        student_unpaid_total = unpaid_books[student]
+        # keep track of the classroom's total unpaid
+        total_dollars_unpaid += student_unpaid_total
+        dollar_rounded = '${dollars:.2f}'.format(dollars=student_unpaid_total)
+        file.write('| {student_name:<16.16} | {dollars:>8.8} |\n'.format(
+            student_name=student, dollars=dollar_rounded))  # unpaid book row
+
+    # write footer of table to file
+    if total_dollars_unpaid > 0:  # only add another spearator is there were unpaid book rows
+        # horizontal border above total row
+        file.write('{}\n'.format(horizontal_border))
+    total_dollars_rounded = '${total:.2f}'.format(total=total_dollars_unpaid)
+    file.write('| {row_label:<16.16} | {total:>8.8} |\n'.format(
+        row_label='Total Books', total=total_dollars_rounded))  # total unreturned row
+    file.write('{border}\n'.format(border=horizontal_border))  # table bottom
+
+    file.close
+
+    return total_dollars_unpaid
+
+
+def display_classroom_totals(classroom, total_unreturned, total_unpaid):
     '''
     prints the class number, total books borrowed by the class, and total amount due of the class;
     does this for every class
