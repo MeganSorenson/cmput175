@@ -185,17 +185,17 @@ def create_table_one(classroom, unreturned_books):
     returns and int of the total number of books unreturned by the class
     '''
     # create table structure elements
-    first_col_width = 16
-    second_col_width = 35
+    first_col_width = 18
+    second_col_width = 37
     third_col_width = 14
-    horizontal_border = ('+' + ('-' * (first_col_width + 2)) + '+' +
-                         ('-' * (second_col_width + 2)) + '+' + ('-' * (third_col_width)) + '+')
+    horizontal_border = ('+' + ('-' * first_col_width) + '+' +
+                         ('-' * second_col_width) + '+' + ('-' * third_col_width) + '+')
 
     # write header of table to file
     file = open('standing.txt', 'a')
     file.write('Class: {number}\n'.format(number=classroom))  # table title
     file.write('{border}\n'.format(border=horizontal_border))  # top of table
-    file.write('| {col1_label:<16.16} | {col2_label:<35.35} | {col3_label:<12.12} |\n'.format(col1_label='Student Name',
+    file.write('| {col1_label:<17}| {col2_label:<36}| {col3_label:<13}|\n'.format(col1_label='Student Name',
                col2_label='Book', col3_label='Due Date'))  # column names
     file.write('{}\n'.format(horizontal_border))
 
@@ -212,16 +212,17 @@ def create_table_one(classroom, unreturned_books):
         for book in book_info:
             # convert due date from numerical to written format
             date = convert_date(book[1])
-            file.write('| {student_name:<16.16} | {book_name:<35.35} | {due_date:^12.12} |\n'.format(
+            file.write('| {student_name:<17.16}| {book_name:<36.35}|{due_date:^14}|\n'.format(
                 student_name=student, book_name=book[0], due_date=date))  # unreturned book row
 
     # write footer of table to file
     if total_number_unreturned > 0:  # only add another spearator is there were unreturned book rows
-        file.write('+' + ('-' * (first_col_width + 2)) + '-' + ('-' * (second_col_width + 2)) +
-                   '+' + ('-' * (third_col_width)) + '+' + '\n')  # horizontal border above total row
-    file.write('| {row_label:<54} | {total:>12} |\n'.format(
+        # horizontal border above total row
+        file.write('{border}\n'.format(border=horizontal_border))
+    file.write('| {row_label:<55}|{total:>13} |\n'.format(
         row_label='Total Books', total=str(total_number_unreturned)))  # total unreturned row
-    file.write('{border}\n'.format(border=horizontal_border))  # table bottom
+    file.write(('+' + ('-' * (first_col_width + 1)) + ('-' * second_col_width) +
+               '+' + ('-' * third_col_width) + '+' + '\n'))  # table bottom
 
     file.close
 
@@ -315,14 +316,14 @@ def create_table_two(unpaid_books):
     returns a float of the total amount unpaid by the classroom
     '''
     # create table structure elements
-    first_col_width = 16
+    first_col_width = 18
     second_col_width = 10
-    horizontal_border = ('+' + ('-' * (first_col_width + 2)) +
-                         '+' + ('-' * (second_col_width)) + '+')
+    horizontal_border = ('+' + ('-' * first_col_width) +
+                         '+' + ('-' * second_col_width) + '+')
     # write header of table to file
     file = open('standing.txt', 'a')
     file.write('{border}\n'.format(border=horizontal_border))  # top of table
-    file.write('| {col1_label:<16.16} | {col2_label:<8.8} |\n'.format(
+    file.write('| {col1_label:<17}| {col2_label:<9}|\n'.format(
         col1_label='Student Name', col2_label='Due'))  # column names
     file.write('{}\n'.format(horizontal_border))
 
@@ -337,7 +338,7 @@ def create_table_two(unpaid_books):
         # keep track of the classroom's total unpaid
         total_dollars_unpaid += student_unpaid_total
         dollar_rounded = '${dollars:.2f}'.format(dollars=student_unpaid_total)
-        file.write('| {student_name:<16.16} | {dollars:>8.8} |\n'.format(
+        file.write('| {student_name:<17.16}|{dollars:>9} |\n'.format(
             student_name=student, dollars=dollar_rounded))  # unpaid book row
 
     # write footer of table to file
@@ -345,9 +346,10 @@ def create_table_two(unpaid_books):
         # horizontal border above total row
         file.write('{}\n'.format(horizontal_border))
     total_dollars_rounded = '${total:.2f}'.format(total=total_dollars_unpaid)
-    file.write('| {row_label:<16.16} | {total:>8.8} |\n'.format(
+    file.write('| {row_label:<17}|{total:>9.8} |\n'.format(
         row_label='Total Books', total=total_dollars_rounded))  # total unreturned row
     file.write('{border}\n'.format(border=horizontal_border))  # table bottom
+    file.write('\n')
 
     file.close
 
@@ -369,6 +371,7 @@ def display_classroom_totals(classroom, total_unreturned, total_unpaid):
         unreturned=total_unreturned))
     print('Total amount due for books: {total}'.format(
         total=unpaid_dollars_rounded))
+    print()
 
 
 main()

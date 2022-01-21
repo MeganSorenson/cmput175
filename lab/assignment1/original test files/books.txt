@@ -1,0 +1,8 @@
+B123456#The mouse and the motorcycle#Beverly Cleary#10.5
+B234587#Charlotte’s Web#Elwyn Brooks White#15
+B354759#Matilda#Roald Dahl#15
+B654190#Harry Potter and the prisoner of Azkaban#Joanne Rowling#25
+B58256#James and the giant peach#Roald Dahl#13
+B246511#The witches#Roald Dahl#22
+B998135#Pipi Longstocking#Astrid Lindgren#8.75
+B100952#The battle of the labyrinth#Rick Riordan#25

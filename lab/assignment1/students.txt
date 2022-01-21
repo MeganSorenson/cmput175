@@ -1,6 +1,8 @@
-S983342,Suzanne Foster,2B
-S981123,Eric Xu,2B
-S980127,Hua Li,3A
-S986654,Myriam Salah,2A
-S982234,Ali Rabbany,3B
-S987654,Kevin Kelly,3A
+S123456,Megan Sorenson,A
+S654321,Abigayle Sorenson,B
+S150260,Konrad Staniszweski,C
+S876293,John Doe,A
+S273540,Jane Doe,A
+S163459,Erin McFadden,C
+S036475,Time Sorenson,C
+S342536,Po Lo,B

@@ -1,8 +1,26 @@
-B123456#The mouse and the motorcycle#Beverly Cleary#10.5
-B234587#Charlotte’s Web#Elwyn Brooks White#15
-B354759#Matilda#Roald Dahl#15
-B654190#Harry Potter and the prisoner of Azkaban#Joanne Rowling#25
-B58256#James and the giant peach#Roald Dahl#13
-B246511#The witches#Roald Dahl#22
-B998135#Pipi Longstocking#Astrid Lindgren#8.75
-B100952#The battle of the labyrinth#Rick Riordan#25
+B1#book1#bsdbjewdew#10
+B2#book2#ndejbej3bj#10
+B3#book3#ndejbej3bj#10
+B4#book4#ndejbej3bj#10
+B5#book5#ndejbej3bj#10
+B7#book7#ndejbej3bj#10
+B9#book9#ndejbej3bj#10
+B8#book8#ndejbej3bj#10
+B10#book10#ndejbej3bj#10
+B11#book11#ndejbej3bj#10
+B12#book12#ndejbej3bj#10
+B13#book13#ndejbej3bj#10
+B14#book14#ndejbej3bj#10
+B15#book15#ndejbej3bj#10
+B17#book17#ndejbej3bj#10
+B18#book18#ndejbej3bj#10
+B19#book19#ndejbej3bj#10
+B20#book20#ndejbej3bj#10
+B21#book21#ndejbej3bj#10
+B24#book24#ndejbej3bj#10
+B25#book25#ndejbej3bj#10
+B26#book26#ndejbej3bj#10
+B30#book30#ndejbej3bj#10
+B31#book31#ndejbej3bj#10
+B35#book35#ndejbej3bj#10
+B36#book36#ndejbej3bj#10
