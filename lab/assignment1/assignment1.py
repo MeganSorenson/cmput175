@@ -1,8 +1,8 @@
-# assumptions:
-#   no whitespace at beginning of line
-#   no blank lines in files
-#   all bookIDs in borrowers.txt and returns.txt also  in books.txt
-#   all studentIDs in borrowers.txt and returns.txt also in students.txt
+# Library System
+# keeps track of classroom books borrowed/returned using 4 text files
+# creates a txt file called standing.txt that gives two tables for each class
+# first table shows the books borrowed by each student that haven't been returned
+# the second table shows the amount due by each student based on the returned books' state
 
 def main():
     '''
@@ -278,7 +278,7 @@ def get_unpaid_total(studentID):
     all_returned_books = read_file_lines('returns.txt', ';')
 
     # book conditions that indicate that payment is not required
-    no_need_to_pay = ('0', '1', '3')
+    no_need_to_pay = ('0', '2', '3')
 
     unpaid_total = 0
     for book in all_returned_books:
