@@ -1,10 +1,10 @@
-#----------------------------------------------------
+# ----------------------------------------------------
 # Lab 3: Numerical Tic Tac Toe class
-# 
-# Author: 
+#
+# Author:
 # Collaborators:
 # References:
-#----------------------------------------------------
+# ----------------------------------------------------
 
 class NumTicTacToe:
     def __init__(self):
@@ -12,18 +12,17 @@ class NumTicTacToe:
         Initializes an empty Numerical Tic Tac Toe board.
         Inputs: none
         Returns: None
-        '''       
-        self.board = [] # list of lists, where each internal list represents a row
+        '''
+        self.board = []  # list of lists, where each internal list represents a row
         self.size = 3   # number of columns and rows of board
-        
+
         # populate the empty squares in board with 0
         for i in range(self.size):
             row = []
             for j in range(self.size):
                 row.append(0)
             self.board.append(row)
-                
-                
+
     def drawBoard(self):
         '''
         Displays the current state of the board, formatted with column and row 
@@ -33,15 +32,36 @@ class NumTicTacToe:
         '''
         # TO DO: delete pass and print out formatted board
         # e.g. an empty board should look like this:
-        #    0   1   2  
-        # 0    |   |   
+        #    0   1   2
+        # 0    |   |
         #   -----------
-        # 1    |   |   
+        # 1    |   |
         #   -----------
-        # 2    |   |           
-        
-        pass
+        # 2    |   |
 
+        print('  ', end='')
+        for col_index in range(self.size):
+            print('{index:^3d} '.format(index=col_index), end='')  # col index
+        print()
+        row_index = 0
+        for row in self.board:
+            print('{index:<2d}'.format(index=row_index), end='')  # row index
+            col_index = 0
+            for cell_value in row:
+                if cell_value == 0:  # change using squareISEmpty later
+                    cell_value = ' '
+                print('{value:^3}'.format(value=cell_value),
+                      end='')  # cell contents
+                if col_index != 2:
+                    print('|', end='')
+                else:
+                    print()
+
+                col_index += 1
+            if row_index != 2:
+                separator = '-' * 11
+                print('{line:>13s}'.format(line=separator))
+            row_index += 1
 
     def squareIsEmpty(self, row, col):
         '''
@@ -54,8 +74,7 @@ class NumTicTacToe:
         '''
         # TO DO: delete pass and complete method
         pass
-    
-    
+
     def update(self, row, col, num):
         '''
         Assigns the integer, num, to the board at the provided row and column, 
@@ -68,8 +87,7 @@ class NumTicTacToe:
         '''
         # TO DO: delete pass and complete method
         pass
-    
-    
+
     def boardFull(self):
         '''
         Checks if the board has any remaining empty squares.
@@ -78,8 +96,7 @@ class NumTicTacToe:
         '''
         # TO DO: delete pass and complete method
         pass
-        
-           
+
     def isWinner(self):
         '''
         Checks whether the current player has just made a winning move.  In order
@@ -91,33 +108,32 @@ class NumTicTacToe:
         '''
         # TO DO: delete pass and complete method
         pass
-     
+
 
 if __name__ == "__main__":
     # TEST EACH METHOD THOROUGHLY HERE
     # suggested tests are provided as comments, but more tests may be required
-    
+
     # start by creating empty board and checking the contents of the board attribute
     myBoard = NumTicTacToe()
     print('Contents of board attribute when object first created:')
     print(myBoard.board)
-    
+
     # does the empty board display properly?
     myBoard.drawBoard()
 
     # assign a number to an empty square and display
-    
+
     # try to assign a number to a non-empty square. What happens?
-    
+
     # check if the board has a winner. Should there be a winner after only 1 entry?
-    
+
     # check if the board is full. Should it be full after only 1 entry?
-    
+
     # add values to the board so that any line adds up to 15. Display
-    
+
     # check if the board has a winner
-    
+
     # check if the board is full
-    
+
     # write additional tests, as needed
-    
