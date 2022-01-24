@@ -6,6 +6,9 @@
 # References:
 # ----------------------------------------------------
 
+# SHOULD I BE CHECKING IF THE NUMBER FROM 1-9 IS ALREADY ON THE BOARD?
+
+
 class NumTicTacToe:
     def __init__(self):
         '''
@@ -39,29 +42,31 @@ class NumTicTacToe:
         #   -----------
         # 2    |   |
 
+        print()
         print('  ', end='')
         for col_index in range(self.size):
-            print('{index:^3d} '.format(index=col_index), end='')  # col index
+            print('{index:^3d}'.format(index=col_index), end='')  # col index
+            print(' ', end='')
         print()
-        row_index = 0
-        for row in self.board:
+        for row_index in range(self.size):
             print('{index:<2d}'.format(index=row_index), end='')  # row index
-            col_index = 0
-            for cell_value in row:
-                if cell_value == 0:  # change using squareISEmpty later
+            for col_index in range(self.size):
+                # check if the cell_value is empty (0)
+                # if yes, make cell value a space
+                # otherwise, find the appropriate int value
+                if self.squareIsEmpty(row_index, col_index):
                     cell_value = ' '
+                else:
+                    cell_value = self.board[row_index][col_index]
                 print('{value:^3}'.format(value=cell_value),
                       end='')  # cell contents
                 if col_index != 2:
                     print('|', end='')
                 else:
                     print()
-
-                col_index += 1
             if row_index != 2:
                 separator = '-' * 11
                 print('{line:>13s}'.format(line=separator))
-            row_index += 1
 
     def squareIsEmpty(self, row, col):
         '''
@@ -73,7 +78,10 @@ class NumTicTacToe:
         Returns: True if square is empty; False otherwise
         '''
         # TO DO: delete pass and complete method
-        pass
+        if self.board[row][col] > 0:
+            return False
+        else:
+            return True
 
     def update(self, row, col, num):
         '''
@@ -86,7 +94,11 @@ class NumTicTacToe:
         Returns: True if attempted update was successful; False otherwise
         '''
         # TO DO: delete pass and complete method
-        pass
+        if self.squareIsEmpty(row, col):
+            self.board[row][col] = num
+            return True
+        else:
+            return False
 
     def boardFull(self):
         '''
@@ -95,7 +107,13 @@ class NumTicTacToe:
         Returns: True if the board has no empty squares (full); False otherwise
         '''
         # TO DO: delete pass and complete method
-        pass
+        board_full = True
+        for row_index in range(self.size):
+            for col_index in range(self.size):
+                if self.squareIsEmpty(row_index, col_index):
+                    board_full = False
+
+        return board_full
 
     def isWinner(self):
         '''
@@ -123,12 +141,26 @@ if __name__ == "__main__":
     myBoard.drawBoard()
 
     # assign a number to an empty square and display
+    num = int(input('Player, please enter a number (1-9): '))
+    row = int(input('Player, please enter a row: '))
+    col = int(input('Player 1, please enter a column: '))
+    myBoard.update(row, col, num)
+    myBoard.drawBoard()
 
     # try to assign a number to a non-empty square. What happens?
+    num = int(input('Player, please enter a number (1-9): '))
+    row = int(input('Player, please enter a row: '))
+    col = int(input('Player 1, please enter a column: '))
+    myBoard.update(row, col, num)
+    myBoard.drawBoard()
 
     # check if the board has a winner. Should there be a winner after only 1 entry?
 
     # check if the board is full. Should it be full after only 1 entry?
+    if myBoard.boardFull():
+        print('board full')
+    else:
+        print('board not full')
 
     # add values to the board so that any line adds up to 15. Display
 
