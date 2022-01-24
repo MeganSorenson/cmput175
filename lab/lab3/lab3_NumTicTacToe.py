@@ -125,7 +125,27 @@ class NumTicTacToe:
                  False otherwise
         '''
         # TO DO: delete pass and complete method
-        pass
+        diag1 = []
+        diag2 = []
+        for col_index in range(self.size):
+            col = []
+            for row_index in range(self.size):
+                # create column list
+                col.append(self.board[row_index][col_index])
+                if col_index == 0:  # only need to check row win and diagonal win once
+                    if sum(self.board[row_index]) == 15:  # row win
+                        return True
+                    # create first diagonal list
+                    diag1.append(self.board[row_index][row_index])
+                    # create second diagonal list
+                    diag2.append(self.board[row_index]
+                                 [self.size - 1 - row_index])
+            if sum(col) == 15:  # column win
+                return True
+        if sum(diag1) == 15 or sum(diag2) == 15:  # diagonal win
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
@@ -148,13 +168,17 @@ if __name__ == "__main__":
     myBoard.drawBoard()
 
     # try to assign a number to a non-empty square. What happens?
-    num = int(input('Player, please enter a number (1-9): '))
-    row = int(input('Player, please enter a row: '))
-    col = int(input('Player 1, please enter a column: '))
-    myBoard.update(row, col, num)
-    myBoard.drawBoard()
+    #num = int(input('Player, please enter a number (1-9): '))
+    #row = int(input('Player, please enter a row: '))
+    #col = int(input('Player 1, please enter a column: '))
+    #myBoard.update(row, col, num)
+    # myBoard.drawBoard()
 
     # check if the board has a winner. Should there be a winner after only 1 entry?
+    if myBoard.isWinner():
+        print('winner')
+    else:
+        print('no winner yet')
 
     # check if the board is full. Should it be full after only 1 entry?
     if myBoard.boardFull():
@@ -163,9 +187,35 @@ if __name__ == "__main__":
         print('board not full')
 
     # add values to the board so that any line adds up to 15. Display
+    for i in range(3):
+        num = int(input('Player, please enter a number (1-9): '))
+        row = int(input('Player, please enter a row: '))
+        col = int(input('Player 1, please enter a column: '))
+        myBoard.update(row, col, num)
+        myBoard.drawBoard()
 
     # check if the board has a winner
+    if myBoard.isWinner():
+        print('winner')
+    else:
+        print('no winner')
 
     # check if the board is full
+    if myBoard.boardFull():
+        print('board full')
+    else:
+        print('board not full')
 
     # write additional tests, as needed
+    # add items unitl board full
+    while not myBoard.boardFull():
+        num = int(input('Player, please enter a number (1-9): '))
+        row = int(input('Player, please enter a row: '))
+        col = int(input('Player 1, please enter a column: '))
+        myBoard.update(row, col, num)
+        myBoard.drawBoard()
+    # check if winner after board full
+    if myBoard.isWinner():
+        print('winner')
+    else:
+        print('no winner')
