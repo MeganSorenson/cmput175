@@ -27,7 +27,7 @@ class ScrabbleDict:
         for line in lines:
             word = line.strip().split(' ')[0]
             if len(word) == size:
-                self.word_dict[word] = line
+                self.word_dict[word.upper()] = line
 
     def check(self, word):
         '''
