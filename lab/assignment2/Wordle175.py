@@ -18,12 +18,16 @@ class ScrabbleDict:
         lines = file.readlines()
         file.close()
 
+        # remove newline characters
+        for i in range(len(lines)):
+            lines[i] = lines[i].strip()
+
         # add word : line to dictionary if word is specified size
         self.word_dict = {}
         for line in lines:
-            word = line.split(' ')[0]
+            word = line.strip().split(' ')[0]
             if len(word) == size:
-                self.word_dict[word] = line.strip()
+                self.word_dict[word] = line
 
     def check(self, word):
         '''
@@ -83,7 +87,7 @@ if __name__ == '__main__':
 
     # create dictionary
     word_size = 5
-    s = ScrabbleDict(word_size, 'test.txt')
+    s = ScrabbleDict(word_size, 'scrabble5.txt')
     # view initialized dictionary
     print('initialized dictionary: ', end='')
     print(s.word_dict)
