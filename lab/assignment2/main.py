@@ -12,20 +12,26 @@ def main():
     # intial conditions
     attempt = 1
     attempted_words = []
+    win = False
     word_size = 5
     word_dict = ScrabbleDict(word_size, 'scrabble5.txt')
     target_word = 'TIMER'  # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!
     feedback = []
 
-    # get user word attempt
-    while attempt <= 6:
+    # play wordle until the user is out of attempts or has guessed the word
+    while attempt <= 6 and not win:
         # prompt user to attempt a word guess until it is valid
         word_attempt = get_valid_guess(attempt, attempted_words, word_dict)
         # compare word_attempt to target_word and display appropriate feedback
-        give_feedback(word_attempt, target_word)
-        # update conditions
-        attempt += 1
-        attempted_words.append(word_attempt)
+        give_feedback(word_attempt, target_word, feedback)
+        # check win
+        win = is_win(word_attempt, target_word)
+        if not win:
+            # update conditions
+            attempt += 1
+            attempted_words.append(word_attempt)
+
+    display_result(target_word, attempt, win)
 
 
 def get_valid_guess(attempt, attempted_words, word_dict):
@@ -95,7 +101,7 @@ def check_not_guessed(word, attempted_words):
         print('{word} was already entered'.format(word=word))
 
 
-def give_feedback(attempt_word, target_word):
+def give_feedback(attempt_word, target_word, previous_feedback):
 
     # initial empty feedback dictionary with 3 categories
     new_feedback = {'Green': [], 'Orange': [], 'Red': []}
@@ -113,7 +119,11 @@ def give_feedback(attempt_word, target_word):
         # add sorted categorized letters to dictionary value
         categorized_letters.sort()
         new_feedback[category] = categorized_letters
-    print(new_feedback.items())
+
+    # update feedback history
+    update_feedback(attempt_word, previous_feedback, new_feedback)
+    # display feedback to user
+    display_feedback(previous_feedback)
 
 
 def label_letters(word_attempt):
@@ -151,6 +161,42 @@ def categorize_letters(word, target, category):
                 # add the remaining letters in the word list
                 categorized_letters.append(word[i])
     return categorized_letters
+
+
+def update_feedback(word, previous_feedback, new_feedback):
+    # initial strings
+    feedback_string = '{word} '.format(word=word)
+    category_strings = []
+    # format strings for each category and append to list of category strings
+    for category, feedback in new_feedback.items():
+        category_strings.append('{category}={{{letters}}}'.format(
+            category=category, letters=', '.join(feedback)))
+    # concatenate category trings to feedback string
+    feedback_string += ' - '.join(category_strings)
+
+    # append new feedback to previous feedback
+    previous_feedback.append(feedback_string)
+
+
+def display_feedback(previous_feedback):
+    for feedback in previous_feedback:
+        print(feedback)
+
+
+def is_win(word, target):
+    if word == target:
+        return True
+    else:
+        return False
+
+
+def display_result(target, attempt, win):
+    if win:
+        print('Found in {attempt} attempts. Well done.'.format(
+            attempt=attempt), end=' ')
+    else:
+        print('Sorry you lose.', end=' ')
+    print('The Word is {word}.'.format(word=target))
 
 
 main()
