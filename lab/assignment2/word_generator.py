@@ -15,7 +15,7 @@ def main():
     # split lines from input file into words and write words to output file
     output_file = open(output_filename, 'w')
     for line in unsplit_lines:
-        words = line.split('#')
+        words = line.strip().split('#')
         for word in words:
             output_file.write('{word}\n'.format(word=word))
     output_file.close()
