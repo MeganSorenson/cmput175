@@ -22,7 +22,7 @@ def main():
         # prompt user to attempt a word guess until it is valid
         word_attempt = get_valid_guess(attempt, attempted_words, word_dict)
         # compare word_attempt to target_word and display appropriate feedback
-        give_feedback(word_attempt, target_word, feedback)
+        give_feedback(word_attempt, target_word)
         # update conditions
         attempt += 1
         attempted_words.append(word_attempt)
@@ -95,161 +95,62 @@ def check_not_guessed(word, attempted_words):
         print('{word} was already entered'.format(word=word))
 
 
-def give_feedback(attempt, target, previous_feedback):
-    '''
-    Compares the attemted word to the target word
-    Displays appropriate new and previous feedback
-    Inputs: attempt (str) rep. the word attempt by the user and
-    target (str) rep. the answer that attempt is being compared to and
-    previous_feedback (list) which contains all the previosuly given feedback
-    Returns: None
-    '''
-    # create empty new feedback dictionary with the three categories
+def give_feedback(attempt_word, target_word):
+
+    # initial empty feedback dictionary with 3 categories
     new_feedback = {'Green': [], 'Orange': [], 'Red': []}
 
-    for i in range(len(target)):
-        # get feedback category by comapring attempted letter to target word letters
-        feedback_category = get_feedback_category(attempt, target, i)
-        # check if the attempt has more than one occurrence of the letter and number letter appropriately
-        feedback_letter = deal_with_letter_multiples(
-            attempt[i], attempt, new_feedback)
-        # add (potentially numbered) letter to appropriate feedback category within new_feedback
-        new_feedback[feedback_category].append(feedback_letter)
+    # numerically label letters with multiple occurrences
+    word = label_letters(attempt_word)
+    # split target word into list
+    target = list(target_word)
 
-    # add new feedback to previous feedback
-    update_feedback(new_feedback, previous_feedback, attempt)
-
-    display_feedback(previous_feedback)
-
-
-def get_feedback_category(word, target_word, letter_index):
-    '''
-    Checks a letter against a target word and determines which feedback category it corresponds to
-    Inputs: letter (str) rep. the letter being checked against the target solution and
-    word (str) rep. the word containiing letters and
-    target_word (str) rep. the entire target word to compare the word to and
-    letter_index (int) rep. the index of the letter in word being compared to target_word
-    Returns: the category (str) of feedback for the given letter
-    '''
-    # check if the lettter is in the right place
-    if word[letter_index] == target_word[letter_index]:
-        category = 'Green'
-    # check if the letter is in the target but not in the right place
-    elif word[letter_index] in target_word:
-        category = 'Orange'
-        if letter_multiple(word, word[letter_index]):
-            max_occurrences = list(target_word).count(word[letter_index])
-            previous_word_letters = list(word[0:letter_index])
-            used_occurrences = previous_word_letters.count(word[letter_index])
-            if used_occurrences >= max_occurrences:
-                category = 'Red'
-    # check is the letter is not in the target
-    else:
-        category = 'Red'
-
-    return category
+    # for each feedback category, find the correpsonding letters from the word by comparing it to the target
+    for category in new_feedback.keys():
+        # categorize letters into the right category
+        categorized_letters = categorize_letters(
+            word, target, category)
+        # add sorted categorized letters to dictionary value
+        categorized_letters.sort()
+        new_feedback[category] = categorized_letters
+    print(new_feedback.items())
 
 
-def deal_with_letter_multiples(letter, word, feedback):
-    '''
-    Checks if a letter occurs multiple times in a word and if the letter is already in feedback
-    Responds by appropriately numbering letters that occur in multiples
-    Inputs: letter (str) rep. the letter to be checked within the word and
-    word (str) rep. the word with letters and 
-    feedback (dict) rep. a dictionary of feedback whose values are being checked
-    Returns: the letter (str) that should be added to the new feedback
-    '''
-    # check if the attempt has more than once occurrence of the letter
-    # if yes, number the letter and add to the appropriate feedback
-    # otherwise, just add the letter to the appropriatefeedback
-    if not letter_multiple(word, letter):
-        return letter
-    elif not in_feedback(letter, feedback):
-        return letter + '1'
-    else:
-        return letter + '2'
+def label_letters(word_attempt):
+    # split word into list of letters
+    word = list(word_attempt)
+    # if letters occur more than once, label numerically in order
+    for letter in word:
+        if word.count(letter) > 1:
+            label = 1
+            for i in range(word.count(letter)):
+                index = word.index(letter)
+                word[index] = letter + str(label)
+                label += 1
+
+    return word
 
 
-def letter_multiple(word, letter):
-    '''
-    Checks if there are more than one instance of a letter in a word
-    Inputs: word (str) rep. the word with letters and letter (str) rep. the letter to be checked within the word
-    Returns: True if there are multiples, otherwise Falkse (bool)
-    '''
-    word_letters = list(word)
-    if word_letters.count(letter) == 1:
-        return False
-    else:
-        return True
+def categorize_letters(word, target, category):
 
-
-def in_feedback(letter, feedback):
-    '''
-    Checks if a letter is already in the feedback
-    Inputs: letter (str) rep. the letter being searched for in the feedback and 
-    feedback (dict) rep. a dictionary of feedback whose values are being checked
-    Returns: True if the letter is already in the feedback, otherwise False
-    '''
-    in_feedback = False
-    for feedback_list in feedback.values():
-        for feedback_letter in feedback_list:
-            if feedback_letter[0] == letter:
-                in_feedback = True
-
-    return in_feedback
-
-
-def update_feedback(new_feedback, previous_feedback, word_attempt):
-    '''
-    Adds the new feedback to the previosu feedback as a formatted string
-    Inputs: new_feedback (dict) rep. the category: letter feedback list that is new and
-    previous_feedback (list) rep. all the formatted and previously given feedback given to the user and
-    word_attempt (str) rep. the word that was given feedback for
-    Returns: None
-    '''
-    # intial feedback with word attempt
-    new_feedback_string = '{word} '.format(word=word_attempt)
-
-    # concatenate the all the catgeories' feedback to the feedback string
-    new_feedback_string += formatted_feedback(new_feedback)
-
-    # append the new feedbck to the previous feedback list
-    previous_feedback.append(new_feedback_string)
-
-
-def formatted_feedback(new_feedback):
-    '''
-    String formats feedback using dictionary items
-    Inputs: new_feedback (dict) rep. category:feedback for a word
-    Returns: a formatted string of all  the feedback
-    '''
-    # initial empty feedback list
-    all_new_feedback = []
-
-    # for each item in the feedback dictionary, format the contents and add to all_new_feedback list
-    for category, feedback in new_feedback.items():
-        # aplhabeticize feedback
-        feedback.sort()
-        # format feedback
-        formatted_feedback = '{category}={{{letters}}}'.format(
-            category=category, letters=', '.join(feedback))
-        all_new_feedback.append(formatted_feedback)
-
-    # join all the category string together
-    feedback_string = ' - '.join(all_new_feedback)
-
-    return feedback_string
-
-
-def display_feedback(feedback_list):
-    '''
-    Displays the feedback for any particular point in the wordle game
-    Inputs: feedback_list (list) rep. strings of all the given feedback to date
-    Returns: None
-    '''
-
-    for feedback in feedback_list:
-        print(feedback)
+    categorized_letters = []
+    # iterate over letters and categorize the letters that are into the right spot
+    for i in range(len(word)):
+        # word[i][0] accounts for numerically labeled letters
+        letter = word[i][0]
+        if letter != ' ':
+            if category == 'Green' and letter == target[i]:
+                categorized_letters.append(word[i])
+                word[i] = ' '
+                target[i] = ''
+            elif category == 'Orange' and letter in target:
+                categorized_letters.append(word[i])
+                word[i] = ' '
+                target.remove(letter)
+            elif category == 'Red':
+                # add the remaining letters in the word list
+                categorized_letters.append(word[i])
+    return categorized_letters
 
 
 main()
