@@ -21,6 +21,27 @@ def parChecker(symbolString):
                     balanced = False
         index += 1
 
+    if balanced and s.isEmpty():
+        # it is important to check both conditions
+        # becasue there could be an opening bracket for which there is no closing bracket
+        # the second condition ensures that the number of open brackets match the number oof closing beackets
+        return True
+
 
 def match(open_bracket, close_bracket):
-    pass
+    # return True is open bracket matches up to its corresponding closing bracket
+    # False otherwise
+    opens = '([{'
+    closers = ')]}'
+    if opens.index(open_bracket) == closers.index(close_bracket):
+        return True
+    else:
+        return False
+
+
+def main():
+    symbolString = input('enter symbol > ')
+    print(parChecker(symbolString))
+
+
+main()
