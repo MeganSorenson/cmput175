@@ -1,4 +1,4 @@
-from stack1 import Stack
+from stack2 import Stack
 
 
 def parChecker(symbolString):
@@ -26,6 +26,8 @@ def parChecker(symbolString):
         # becasue there could be an opening bracket for which there is no closing bracket
         # the second condition ensures that the number of open brackets match the number oof closing beackets
         return True
+    else:
+        return False
 
 
 def match(open_bracket, close_bracket):
