@@ -75,7 +75,7 @@ class ScrabbleDict:
 
     def getMaskedWords(self, template):
         '''
-        Gets a template of words from self.word_dict that are compatible with the template
+        Finds words from self.word_dict that are compatible with the template
         Ultimately gives hints based on template
         Inputs: template (str) rep. a semi-hidden word used to choose hints from self.dict
         Returns: a list of words that follow the template
@@ -98,7 +98,36 @@ class ScrabbleDict:
         return masked_words
 
     def getConstrainedWords(self, template, letters):
-        pass
+        '''
+        Finds words from self.word_dict that are compatible with the template that also use letter
+        Ultimately gives hints based on template that are more specific than getMaskedWords()
+        Inputs: template (str) rep. a semi-hidden word used to choose hints from self.dict and
+        letters (list) rep. letters that must be in the word at one of the '*' characters of the template
+        Returns: a list of words that follow the template and the letter
+        '''
+
+        # get masked words that don;t account for letter
+        masked_words = self.getMaskedWords(template)
+        constrained_words = []
+        # make sure letters is all capitalized
+        for i in range(len(letters)):
+            letters[i] = letters[i].upper()
+        # make sure that letters is right length
+        if len(letters) <= list(template).count('*'):
+            # for '*' in template, check if it is letter,
+            # if none of the '*'s are letter, don'd add to constrained_words
+            # otherwise, add
+            for i in range(len(template)):
+                if template[i] == '*':
+                    # iterate over masked_words to check conditions
+                    for word in masked_words:
+                        add = False
+                        if word[i].upper() in letters:
+                            add = True
+                        if add:
+                            constrained_words.append(word)
+
+        return constrained_words
 
 
 if __name__ == '__main__':
@@ -170,5 +199,15 @@ if __name__ == '__main__':
     print('test5: template is {template}'.format(template=template))
     hints = s2.getMaskedWords(template)
     print('test5: hints that follow template are:')
+    for word in hints:
+        print(word)
+
+    # TEST 6: test getConstrainedWords()
+    print('\nTEST 6: check getConstrainedWords()')
+    template = 'T**ER'
+    letters = ['I']
+    print('test6: template is {template}'.format(template=template))
+    hints = s2.getConstrainedWords(template, letters)
+    print('test6: hints that follow template are:')
     for word in hints:
         print(word)
