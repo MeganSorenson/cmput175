@@ -27,7 +27,7 @@ class ScrabbleDict:
         for line in lines:
             word = line.strip().split(' ')[0]
             if len(word) == size:
-                self.word_dict[word.upper()] = line
+                self.word_dict[word] = line
 
     def check(self, word):
         '''
@@ -73,6 +73,33 @@ class ScrabbleDict:
         '''
         return self.size
 
+    def getMaskedWords(self, template):
+        '''
+        Gets a template of words from self.word_dict that are compatible with the template
+        Ultimately gives hints based on template
+        Inputs: template (str) rep. a semi-hidden word used to choose hints from self.dict
+        Returns: a list of words that follow the template
+        '''
+        masked_words = []
+        # iterate over words in the dictionary to check if they work as hints
+        for word in self.word_dict.keys():
+            # only consider if word and template are the same length
+            if self.getWordSize() == len(template):
+                add = True
+                # for each letter in the template,
+                # check if it's not an asterix and whether the letter matched to the word
+                # only add to masked_words list if all letters in template match the letters in the word
+                for i in range(len(template)):
+                    if template[i] != '*' and template[i] != word[i].upper():
+                        add = False
+                if add:
+                    masked_words.append(word)
+
+        return masked_words
+
+    def getConstrainedWords(self, template, letters):
+        pass
+
 
 if __name__ == '__main__':
     # tests the ScrabbleDict class and its methods
@@ -87,7 +114,7 @@ if __name__ == '__main__':
 
     # create dictionary
     word_size = 5
-    s = ScrabbleDict(word_size, 'scrabble5.txt')
+    s = ScrabbleDict(word_size, 'test.txt')
     # view initialized dictionary
     print('initialized dictionary: ', end='')
     print(s.word_dict)
@@ -135,3 +162,13 @@ if __name__ == '__main__':
     else:
         print('test4: known word not in dictionary')
         print('test4: FAILED')
+
+    # TEST 5: check getMaskedWords()
+    s2 = ScrabbleDict(word_size, 'scrabble5.txt')
+    print('\nTEST 5: check getMaskedWords()')
+    template = 'T**ER'
+    print('test5: template is {template}'.format(template=template))
+    hints = s2.getMaskedWords(template)
+    print('test5: hints that follow template are:')
+    for word in hints:
+        print(word)

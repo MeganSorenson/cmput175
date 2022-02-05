@@ -4,6 +4,7 @@
 
 # import ScrabbleDict class from Task 2
 from Wordle175 import ScrabbleDict
+import random
 
 
 def main():
@@ -15,7 +16,7 @@ def main():
     win = False
     word_size = 5
     word_dict = ScrabbleDict(word_size, 'scrabble5.txt')
-    target_word = 'TIMER'  # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!
+    target_word = 'TIMER'.upper()  # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!
     feedback = []
 
     # play wordle until the user is out of attempts or has guessed the word
@@ -27,7 +28,7 @@ def main():
         # check win
         win = is_win(word_attempt, target_word)
         if not win:
-            # update conditions
+            # update conditions if game not over
             attempt += 1
             attempted_words.append(word_attempt)
 
@@ -81,7 +82,7 @@ def check_existence(word, word_dict):
     Inputs: word (str) rep. a user word guess and word_dict (dict) rep. a dictionary of valid words
     Returns: True if the word exists, otherwise False (bool)
     '''
-    if word_dict.check(word):
+    if word_dict.check(word.lower()):
         return True
     else:
         print('{word} is not a recognized word'.format(word=word))

@@ -6,16 +6,16 @@ class Stack:
         self.items = []
 
     def push(self, item):
-        # location 0 is the top of the stack
-        self.items.insert(0, item)
+        # size of list - 1 is the top of the stack (right side)
+        self.items.append(item)
 
     def pop(self):
-        # pop from the 0th index
-        return self.items.pop(0)
+        # pop from right side
+        return self.items.pop()
 
     def peek(self):
         # just look at top of stack
-        return self.items[0]
+        return self.items[-1]
 
     def isEmpty(self):
         # returns T or F depending on if stack is empty or not
