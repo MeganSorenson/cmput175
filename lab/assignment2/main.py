@@ -1,4 +1,8 @@
 # Wordle175 Game
+# asks user to guess a word of a certain length
+# gives feedback on which letters are correct
+# user has 6 guesses to correctly input the word from a word dictionary
+# otherwise, game over
 
 # Author: Megan Sorenson
 
@@ -9,6 +13,10 @@ import random
 
 def main():
     '''
+    Main function of the wordle game that asks for user input, gives feedback, and checks the win conditions
+    Using user-defined functions
+    Inputs: None
+    Returns: None
     '''
     # intial conditions
     attempt = 1
@@ -16,7 +24,8 @@ def main():
     win = False
     word_size = 5
     word_dict = ScrabbleDict(word_size, 'scrabble5.txt')
-    target_word = 'TIMER'.upper()  # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!
+    # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    target_word = 'TIMER'.upper()
     feedback = []
 
     # play wordle until the user is out of attempts or has guessed the word
@@ -103,7 +112,13 @@ def check_not_guessed(word, attempted_words):
 
 
 def give_feedback(attempt_word, target_word, previous_feedback):
-
+    '''
+    Evaluates and displays feeedback about letters in a user guess
+    Based on the letetr and it's position in the word
+    Inputs: attempt_word (str) rep. a word that feedback is given for and
+    target_word (str) rep. the word used to give feedbck about attempt_word and
+    previosu feedback (list) rep. all the hitorical feedback given for previosu user attempts
+    '''
     # initial empty feedback dictionary with 3 categories
     new_feedback = {'Green': [], 'Orange': [], 'Red': []}
 
@@ -128,6 +143,11 @@ def give_feedback(attempt_word, target_word, previous_feedback):
 
 
 def label_letters(word_attempt):
+    '''
+    Checks if a letter occurs more than once in a word and numerically labels it if so
+    Inputs: word_attempt (str) rep. the word whose letetrs are being labeled
+    Returns: a list representing containing the labeled letters of word
+    '''
     # split word into list of letters
     word = list(word_attempt)
     # if letters occur more than once, label numerically in order
@@ -143,7 +163,13 @@ def label_letters(word_attempt):
 
 
 def categorize_letters(word, target, category):
-
+    '''
+    Evaluates which category a letter should be in based on its letter and position
+    Inputs: word (list) containing letters being categorized and
+    target (list) containing letters used to categorize the word letters and
+    category (str) rep. which category we are avaluating the letters for
+    Returns: a list containing the categorized letetrs for the specified category
+    '''
     categorized_letters = []
     # iterate over letters and categorize the letters that are into the right spot
     for i in range(len(word)):
@@ -165,6 +191,13 @@ def categorize_letters(word, target, category):
 
 
 def update_feedback(word, previous_feedback, new_feedback):
+    '''
+    Formats and updates feedback for the user's word attempts
+    Inputs: word (str) representing the last word attempt by the user and
+    previous_feedback (list) containing the histroical formatted feedback for previous word attempts and
+    new_feedback (dict) of category:letters rep. the non-formatted feedback for word
+    Returns: None
+    '''
     # initial strings
     feedback_string = '{word} '.format(word=word)
     category_strings = []
@@ -180,11 +213,21 @@ def update_feedback(word, previous_feedback, new_feedback):
 
 
 def display_feedback(previous_feedback):
+    '''
+    Displays all the feedback for the user's word attempts
+    Inputs: previous_feedback (list) containing all the historical formatted feedback for the user's word attempts
+    Returns: None
+    '''
     for feedback in previous_feedback:
         print(feedback)
 
 
 def is_win(word, target):
+    '''
+    Checks if the user has won the game by guessing the correct word
+    Inputs: word (str) rep. the last word attempt and target (str) rep. the word that shoudl be guessed
+    Returns: True if the user won by guessing the target word, otherwise False (bool)
+    '''
     if word == target:
         return True
     else:
@@ -192,6 +235,13 @@ def is_win(word, target):
 
 
 def display_result(target, attempt, win):
+    '''
+    Displays the results at the end of the game base on the win condition
+    Inputs: target (str) rep. the word that needed to be guessed to win and
+    attempt (int) rep. the turn that the player is on and
+    win (bool) rep. whether the user won or not
+    Returns: None
+    '''
     if win:
         print('Found in {attempt} attempts. Well done.'.format(
             attempt=attempt), end=' ')

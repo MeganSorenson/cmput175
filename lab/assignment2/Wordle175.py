@@ -1,4 +1,7 @@
 # Scrabble Dictionary Class
+# provides the abstract data type used in the Wordle game of main.py
+# creates a word dictionary from a text file and allows actions to be called on this word dictionary
+# to interact with the dictionary of words
 
 # Author: Megan Sorenson
 
@@ -207,6 +210,7 @@ if __name__ == '__main__':
     template = 'T**ER'
     letters = ['I']
     print('test6: template is {template}'.format(template=template))
+    print('test6: input letters are {letters}'.format(letters=letters))
     hints = s2.getConstrainedWords(template, letters)
     print('test6: hints that follow template are:')
     for word in hints:
