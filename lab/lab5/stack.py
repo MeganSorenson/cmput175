@@ -17,19 +17,17 @@ class Stack:
     def pop(self):
         try:
             last_item = self.items.pop()
-        except IndexError as e:
-            print(e)
-
-        return last_item
+            return last_item
+        except IndexError:
+            raise Exception('Cannot go back.')
 
     # MODIFY: RAISE AN EXCEPTION IF THIS METHOD IS INVOKED ON AN EMPTY STACK
     def peek(self):
         try:
             top_item = self.items[len(self.items)-1]
-        except IndexError as e:
-            print(e)
-
-        return top_item
+            return top_item
+        except IndexError:
+            raise Exception('Cannot go forward.')
 
     def isEmpty(self):
         return self.items == []
