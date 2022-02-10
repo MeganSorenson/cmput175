@@ -1,9 +1,8 @@
 # ----------------------------------------------------
 # Lab 5, Exercise 2: Web browser simulator
 # Purpose of program:
-#
-# Author:
-# Collaborators/references:
+# implements the functionality of a web browser back/forward button using stacks
+# Author: Megan Sorenson
 # ----------------------------------------------------
 
 from stack import Stack

@@ -30,6 +30,7 @@ class ScrabbleDict:
         for line in lines:
             word = line.strip().split(' ')[0]
             if len(word) == size:
+                word = word.lower()
                 self.word_dict[word] = line
 
     def check(self, word):
@@ -38,6 +39,7 @@ class ScrabbleDict:
         Inputs: word (str) rep. the word being checked
         Returns: True if the word is in the dictionary, otherwise False (bool)
         '''
+        word = word.lower()
         if self.word_dict.get(word, False) != False:
             return True
         else:
@@ -58,8 +60,9 @@ class ScrabbleDict:
         Returns: a sorted list of words
         '''
 
-        # iterate through dictionary keys checking first letter
+        # iterate through dictionary checking first letter
         # add key (word) to new list of words if the first letter is the specified letter
+        letter = letter.lower()
         word_list = []
         for word in self.word_dict.keys():
             if word[0] == letter:
@@ -83,6 +86,7 @@ class ScrabbleDict:
         Inputs: template (str) rep. a semi-hidden word used to choose hints from self.dict
         Returns: a list of words that follow the template
         '''
+        template = template.lower()
         masked_words = []
         # iterate over words in the dictionary to check if they work as hints
         for word in self.word_dict.keys():
@@ -93,7 +97,7 @@ class ScrabbleDict:
                 # check if it's not an asterix and whether the letter matched to the word
                 # only add to masked_words list if all letters in template match the letters in the word
                 for i in range(len(template)):
-                    if template[i] != '*' and template[i] != word[i].upper():
+                    if template[i] != '*' and template[i] != word[i]:
                         add = False
                 if add:
                     masked_words.append(word)
@@ -114,7 +118,7 @@ class ScrabbleDict:
         constrained_words = []
         # make sure letters is all capitalized
         for i in range(len(letters)):
-            letters[i] = letters[i].upper()
+            letters[i] = letters[i].lower()
         # make sure that letters is right length
         if len(letters) <= list(template).count('*'):
             # for '*' in template, check if it is letter,
@@ -125,7 +129,7 @@ class ScrabbleDict:
                     # iterate over masked_words to check conditions
                     for word in masked_words:
                         add = False
-                        if word[i].upper() in letters:
+                        if word[i] in letters:
                             add = True
                         if add:
                             constrained_words.append(word)

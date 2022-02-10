@@ -1,9 +1,9 @@
 # ----------------------------------------------------
 # Stack implementation #2
 # (Top of stack corresponds to back of list)
-#
+# implementation of the stack ADT
 # Author: CMPUT 175 team
-# Updated by:
+# Updated by: Megan Sorenson
 # ----------------------------------------------------
 
 class Stack:

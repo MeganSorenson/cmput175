@@ -91,7 +91,7 @@ def check_existence(word, word_dict):
     Inputs: word (str) rep. a user word guess and word_dict (dict) rep. a dictionary of valid words
     Returns: True if the word exists, otherwise False (bool)
     '''
-    if word_dict.check(word.lower()):
+    if word_dict.check(word):
         return True
     else:
         print('{word} is not a recognized word'.format(word=word))
