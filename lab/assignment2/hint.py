@@ -105,7 +105,7 @@ def display_hints(template, letters, word_dict):
     Displays hints based on user input and a word dictionary
     Inputs: template (str) rep. a word of letters and asterisks and
     leters (list) containing additional letters that could be the asterisks of template and
-    word_dict (ScrabbleDict) rep. an imported class of a dictionary of words used to get hints from
+    word_dict (ScrabbleDict) rep. a word dictionary
     Returns: None
     '''
     # get constrained words if there were letter inputs
@@ -124,7 +124,7 @@ def display_hints(template, letters, word_dict):
 def get_dict_stats(word_dict):
     '''
     Traverses the list of words in a dictionary and counts the appearance of each letter
-    Inputs: word_dict (dict) of words:definitions rep. all the words in the game dictionary
+    Inputs: word_dict (ScrabbleDict) rep. a word dictionary
     Returns: a dictionary of letter:count rep. stats for all words in word_dict
     '''
     # create initial empty dictionary with a key for each letter in the alphabet

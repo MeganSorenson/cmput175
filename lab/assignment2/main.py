@@ -24,8 +24,7 @@ def main():
     win = False
     word_size = 5
     word_dict = ScrabbleDict(word_size, 'scrabble5.txt')
-    # CHANGE THIS LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    target_word = 'TIMER'.upper()
+    target_word = get_random_word(word_dict)
     feedback = []
 
     # play wordle until the user is out of attempts or has guessed the word
@@ -44,13 +43,29 @@ def main():
     display_result(target_word, attempt, win)
 
 
+def get_random_word(word_dict):
+    '''
+    Gets a random word from a word dictionary
+    Inputs: word_dict (ScrabbleDict) rep. a word dictionary
+    Returns: a str rep. the random word chosen (in uppercase)
+    '''
+    # get all words in dictionary
+    all_words = word_dict.getMaskedWords(
+        '*****')  # all asterix template so that it can be any word
+    # get random index and then find the corresponding word
+    random_index = random.randint(0, len(all_words) - 1)
+    random_word = all_words[random_index]
+
+    return random_word.upper()
+
+
 def get_valid_guess(attempt, attempted_words, word_dict):
     '''
     Prompts user to input a word guess
     Checks if guess is valid
     Inputs: attempt (int) rep. the attempt number the user is on and
     attempted_words (list) rep. list of already guessed words and
-    word_dict (dict) whose keys rep. the possible words
+    word_dict (ScrabbleDict) rep. a word dictionary
     Returns: valid word (str) guess by user
     '''
     # get user input
@@ -71,7 +86,7 @@ def check_length(word, word_dict):
     '''
     Checks if a word attempt is of the right length based on a word dictionary
     Prints error message is word is not the right length
-    Inputs: word (str) rep. a user word guess and word_dict (dict) rep. a dictionary of valid words
+    Inputs: word (str) rep. a user word guess and word_dict (ScrabbleDict) rep. a word dictionary
     Returns: True if the word is the right length, otherwise False (bool)
     '''
     if len(word) == word_dict.getWordSize():
@@ -88,7 +103,7 @@ def check_existence(word, word_dict):
     '''
     Checks if a word attempt exists in a given word dictionary
     Prints error message is word does not exist
-    Inputs: word (str) rep. a user word guess and word_dict (dict) rep. a dictionary of valid words
+    Inputs: word (str) rep. a user word guess and word_dict (ScrabbleDict) rep. a word dictionary
     Returns: True if the word exists, otherwise False (bool)
     '''
     if word_dict.check(word):
