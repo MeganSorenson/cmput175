@@ -1,8 +1,8 @@
 # ----------------------------------------------------
 # Lab 6, Exercise 2 - Queue efficiencies
-#
+# checks the time efficiencies of bounded and circular queue classes
 # Author of supporting code: CMPUT 175 Team
-# Author of dequeue_experiment():
+# Author of dequeue_experiment(): Megan Sorenson
 # ----------------------------------------------------
 
 import random
