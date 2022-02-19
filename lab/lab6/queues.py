@@ -26,7 +26,7 @@ class BoundedQueue:
         '''
         # if the quque is full, raise an error
         # otherwise, add item to tail of list
-        assert len(self.__items) < self.__capacity, ('Error: Queue is full')
+        assert not self.is_full(), ('Error: Queue is full')
         self.__items.append(item)
         #####  END CODE HERE ######
 
@@ -45,7 +45,7 @@ class BoundedQueue:
         '''
         # if the queue is empty, raise and error
         # otherwise, remove item from head of list
-        assert len(self.__items) > 0, ('Error: Queue is empty')
+        assert not self.is_empty(), ('Error: Queue is empty')
         return self.__items.pop(0)
         #####  END CODE HERE ######
 
@@ -123,8 +123,8 @@ class CircularQueue:
         '''
         # if the queue is full, raise an error
         # otherwise add the item at self.__tail index
-        assert self.__count != self.__capacity, ("Error: Queue is full")
-        self.__items[self.__tai] = item
+        assert not self.is_full(), ("Error: Queue is full")
+        self.__items[self.__tail] = item
         # increment count and update self.__tail
         self.__count += 1
         self.__tail = (self.__tail + 1) % self.__capacity
@@ -149,7 +149,7 @@ class CircularQueue:
         '''
         # if queue us empty, rasie and Error
         # otherwise, remove item from head of list and replace with None
-        assert len(self.__items) > 0, ('Error: Queue is empty')
+        assert not self.is_empty(), ('Error: Queue is empty')
         item = self.__items[self.__head]
         self.__items[self.__head] = None
         self.__count -= 1
@@ -269,7 +269,75 @@ def main():
     # 7. To Do: Uncomment print statements, one at a time
     # Can we just access private capacity attribute directly outside of Class definition?
     print(bq.capacity)
-    print(bq.__capacity)
+    # print(bq.__capacity)
+
+    # Test circular queue creation
+    cq = CircularQueue(3)
+    print("My circular queue is:", cq)
+    print(repr(cq))
+    print("Is my circular queue empty?", cq.is_empty())
+    print('----------------------------------')
+
+    # 1. To Do
+    # Test when we try to dequeue from an EMPTY queue
+    print('Try to dequeue an empty circular queue...')
+    try:
+        dequeued_item = cq.dequeue()
+        print(repr(cq))
+    except Exception as dequeueError:
+        # To Do: Write a way to handle it
+        print(dequeueError.args[0])
+
+    print('----------------------------------')
+
+    # 2. To Do
+    # Test adding one element to queue
+
+    # Your test code goes here...
+    cq.enqueue('bob')
+    print(cq)
+    print(str(cq))
+    print("Is my circular queue empty?", cq.is_empty())
+    print('----------------------------------')
+
+    # 3. Uncomment and run
+    # Test adding more elements to queue
+    cq.enqueue("eva")
+    cq.enqueue("paul")
+    print(repr(cq))
+    print("Is my circular queue full?", cq.is_full())
+    print("There are", cq.size(), "elements in my circular queue.")
+    print('----------------------------------')
+
+    # 4. To Do
+    # Test trying to add an element to a FULL queue
+
+    # Your test code goes here...hint: look at dequeuing from EMPTY queue
+    print('Try to enqueue a full circular queue...')
+    try:
+        cq.enqueue('item')
+        print(repr(cq))
+    except Exception as enqueueError:
+        print(enqueueError.args[0])
+
+    print('----------------------------------')
+
+    # 5. Uncomment and run
+    # Test removing element from full queue
+    item = cq.dequeue()
+    print(repr(cq))
+    print(item, "was first in the circular queue:", cq)
+    print("There are", cq.size(), "elements in my circular queue.")
+    print('----------------------------------')
+
+    # 6. Uncomment and run
+    # Test capacity of queue
+    print("Total capacity is:", cq.capacity())
+
+    # 7. To Do: Uncomment print statements, one at a time
+    # Can we just access private capacity attribute directly outside of Class definition?
+    print(cq.capacity)
+    # print(cq.__capacity)
 
 
 if __name__ == '__main__':

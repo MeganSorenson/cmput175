@@ -1,9 +1,9 @@
-#----------------------------------------------------
+# ----------------------------------------------------
 # Lab 6, Exercise 2 - Queue efficiencies
-# 
+#
 # Author of supporting code: CMPUT 175 Team
-# Author of dequeue_experiment(): 
-#----------------------------------------------------
+# Author of dequeue_experiment():
+# ----------------------------------------------------
 
 import random
 import time
@@ -12,7 +12,8 @@ from queues import CircularQueue
 from decimal import Decimal
 from terminalplot import plot2
 
-def enqueue_experiment(queue_class , queue_size ):
+
+def enqueue_experiment(queue_class, queue_size):
     '''
     This function will enqueue elements into Bounded and Circular queues and return them
     :param queue_class: The queue_class description that we  want to declare the  object for like BoundedQueue, CircularQueue
@@ -36,14 +37,21 @@ def dequeue_experiment(queue):
     :param queue: (queue object) The queue object that we want to test on
     :return: (float) Returns the time of execution of the dequeue operation
     '''
-    time = 0.0 # the time to dequeue all the elements
     ##### START CODE HERE #####
+    time_interval = 0.0
+    start = time.time()
+    # removes first item in the queue, and continues to do so until that queue is empty
+    while not queue.is_empty():
+        queue.dequeue()
+    end = time.time()
 
+    time_interval = end - start
 
     #####  END CODE HERE ######
-    return time
+    return time_interval
 
-def avg_dequeue_experiment(queue_class, size, sample_size = 5):
+
+def avg_dequeue_experiment(queue_class, size, sample_size=5):
     '''
     This function is used to average over many runs for the dequeue experiment
     :param queue_class: (function-type) The typeof queue that we are using
@@ -70,7 +78,7 @@ def main():
     for q in queues_sizes:
         # print("Done for Queue Size : {}".format(q))
         bq = enqueue_experiment(BoundedQueue, q)
-        cq = enqueue_experiment(CircularQueue,q)
+        cq = enqueue_experiment(CircularQueue, q)
         bqueues.append(bq)
         cqueues.append(cq)
 
@@ -83,13 +91,15 @@ def main():
     line = '-'*(13 + 14*len(queues_sizes))
     line2 = str('-'*13 + '+')*(1 + len(queues_sizes))
     print(line)
-    print(str(" Queue Size  | " + ' '.join(" {:<10} |".format(q) for q in queues_sizes)))
+    print(str(" Queue Size  | " +
+          ' '.join(" {:<10} |".format(q) for q in queues_sizes)))
     print(line2)
-    print(str(" B que Time  | " + ' '.join(" {:<10} |".format(('%.2E' % Decimal(str(q)))[:10]) for q in bounded_queue_times)))
+    print(str(" B que Time  | " + ' '.join(" {:<10} |".format(
+        ('%.2E' % Decimal(str(q)))[:10]) for q in bounded_queue_times)))
     print(line2)
-    print(str(" C que Time  | " + ' '.join(" {:<10} |".format(('%.2E' % Decimal(str(q)))[:10]) for q in circular_queue_times)))
+    print(str(" C que Time  | " + ' '.join(" {:<10} |".format(
+        ('%.2E' % Decimal(str(q)))[:10]) for q in circular_queue_times)))
     print(line)
-
 
     # plot the terminal graph
     try:
@@ -99,18 +109,21 @@ def main():
         '#' : Points of Circular Queue
         '+' : Points where both coincide''')
 
-        plot2(queues_sizes, bounded_queue_times , circular_queue_times)
+        plot2(queues_sizes, bounded_queue_times, circular_queue_times)
     except:
         print("Not able to print graph. Continuing .....")
 
     # run experiment using averages
-    avg_b_queue_times = [avg_dequeue_experiment(BoundedQueue, size) for size in queues_sizes]
-    avg_c_queue_times = [avg_dequeue_experiment(CircularQueue, size) for size in queues_sizes]
+    avg_b_queue_times = [avg_dequeue_experiment(
+        BoundedQueue, size) for size in queues_sizes]
+    avg_c_queue_times = [avg_dequeue_experiment(
+        CircularQueue, size) for size in queues_sizes]
 
     # display table of averaged results (multiple runs for each data point)
     print("Times for Bounded and Circular Queue with Averaging")
     print(line)
-    print(str(" Queue Size  | " + ' '.join(" {:<10} |".format(q) for q in queues_sizes)))
+    print(str(" Queue Size  | " +
+          ' '.join(" {:<10} |".format(q) for q in queues_sizes)))
     print(line2)
     print(str(
         " B que Time  | " + ' '.join(" {:<10} |".format(('%.2E' % Decimal(str(q)))[:10]) for q in avg_b_queue_times)))
@@ -138,9 +151,3 @@ if __name__ == '__main__':
     main()
     end = time.time()
     print("The program took {} seconds to run".format(end - start))
-
-
-
-
-
-
