@@ -24,7 +24,7 @@ def main():
 
     # ask user to input template until they enter a valid one
     while not template_valid:
-        template = input('Please enter a template of {word_size} characters: '.format(
+        template = input('Please enter a template of {word_size} characters (ex: T***R): '.format(
             word_size=word_size)).lower()
         template_valid = check_template_validity(template, word_size)
     # ask user to input additional letters until they enter a valid entry
@@ -65,7 +65,7 @@ def get_letters():
     Returns: a list of letters
     '''
     letters = input(
-        'Please enter any additional letters (optional): ')
+        'Please enter any additional letters (optional, ex: abc): ')
     letters = list(letters.strip())
     for i in range(len(letters)):
         letters[i] = letters[i].lower()
