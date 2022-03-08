@@ -55,7 +55,7 @@ class SLinkedList:
         new_node = SLinkedListNode(item, None)
         # if list is empty, just add to list
         if self.size == 0:
-            self.add(new_node)
+            self.add(item)
         # if position is 0, use add function
         elif pos == 0:
             self.add(item)
