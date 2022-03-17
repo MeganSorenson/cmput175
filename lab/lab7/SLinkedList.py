@@ -1,3 +1,7 @@
+# Singly Linked List Node and List ADT implementation
+# author: CMPUT 175
+# modified by: Megan Sorenson
+
 class SLinkedListNode:
     # an instance of this class is a node in a Single Linked List
     # a node has a reference to data and reference to next
@@ -60,7 +64,7 @@ class SLinkedList:
         elif pos == 0:
             self.add(item)
         # if position is end of linked list, use append function
-        elif pos == self.size:
+        elif pos == (self.size - 1):
             self.append(item)
         # otherwise, traverse the linked list to the corresponding position
         # and adjust the node references as necesssary

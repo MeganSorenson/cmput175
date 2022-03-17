@@ -1,3 +1,7 @@
+# Doubly Linked List Node and List ADT implementation
+# author: CMPUT 175
+# modified by: Megan Sorenson
+
 class DLinkedListNode:
     # An instance of this class represents a node in Doubly-Linked List
     def __init__(self, initData, initNext, initPrevious):
