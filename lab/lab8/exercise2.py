@@ -10,6 +10,11 @@ def intDivision(dividend, divisor):
     divisor is an int representing the denominator of the integer division
     Returns an int representing the result of the integer division
     '''
+    # check validity of inputs
+    assert isinstance(dividend, int) and isinstance(
+        divisor, int), 'Error: dividend and divisor must be integers'
+    assert dividend >= 0 and divisor > 0, 'Error: dividend must be greater or equal to 0 and divisor must be greater than but not 0'
+
     if dividend < divisor:  # base case where divisor cannot be subtracted from dividend
         return 0
 
