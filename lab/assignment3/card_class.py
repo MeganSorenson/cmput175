@@ -1,10 +1,15 @@
 class Card:
     '''
     Card class for an abacus game
-    Card can reset, 
+    Card can reset it's configuration, show itself, and display one of it's stacks at a time
     '''
 
     def __init__(self, colours, depth):
+        # check inputs
+        assert isinstance(colours, int) and isinstance(
+            depth, int), 'Error: number of colours and depth must be integers'
+        assert colours > 0 and depth > 0, 'Error: number of colours and depth must be greater than zero'
+
         self.__colours = colours
         self.__depth = depth
         self.__beads = self.select_beads()
@@ -51,13 +56,19 @@ class Card:
                         print(' ', end='')
             print('|')  # add final boundary symbol
 
+        # print bottom statement
+        print('\nfrom a list ', end='')
+        print(self.__beads)
 
-def main():
-    card = Card(5, 3)
-    card.show()
-    card.reset()
-    print('New')
-    card.show()
+    def stack(self, number):
+        '''
+        Gets the ordered list of elements from top to bottom in a specified stack
+        number is the stack number being returned
+        Returns a list representing the requested stack
+        '''
+        assert number > 0 and number <= self.__colours, 'Error: number must be greater than zero and no greater than {max:d}'.format(
+            max=self.__colours)
+        lower_index = 0 + ((number - 1) * self.__depth)
+        upper_index = self.__depth * number
 
-
-main()
+        return self.__beads[lower_index:upper_index]
