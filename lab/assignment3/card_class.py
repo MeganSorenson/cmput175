@@ -5,6 +5,12 @@ class Card:
     '''
 
     def __init__(self, colours, depth):
+        '''
+        Initializes the Card class by creating a list of beads based on the inputs
+        Also checks the validity of the inputs
+        colours is an int representing the number of colours in the Card
+        depth is an int representing the depth of the card stacks
+        '''
         # check inputs
         assert isinstance(colours, int) and isinstance(
             depth, int), 'Error: number of colours and depth must be integers'
