@@ -1,3 +1,7 @@
+# Recursive sorting algorithms
+# author: Megan Sorenson
+# main function testing written by CMPUT 175
+
 import random
 import time
 
