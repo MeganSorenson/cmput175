@@ -13,8 +13,8 @@ def binary_search2(key, alist, low, high):
     high is the highest index of a list
     '''
     guess = (low + high) // 2
-    if alist[guess] == key:
-        return low
+    if alist[guess] == key:  # base case when key is found
+        return guess
     elif low != high:
         if key < alist[guess]:
             return binary_search2(key, alist, low, guess - 1)
