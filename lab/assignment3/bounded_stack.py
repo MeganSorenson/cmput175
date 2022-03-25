@@ -176,3 +176,14 @@ if __name__ == "__main__":
     else:
         print('test10: stack did not reset')
         print('test10: FAILED')
+
+    # test initializing with wrong
+    print('\nTEST11: test initialization of stack with invalid parameters')
+    try:
+        BStack('a')
+        BStack(-1)
+    except:
+        print('test11: PASSED')
+    else:
+        print('test11: initialized stack with invalid parameters')
+        print('test11: FAILED')

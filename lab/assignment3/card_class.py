@@ -78,3 +78,33 @@ class Card:
         upper_index = self.__depth * number
 
         return self.__beads[lower_index:upper_index]
+
+
+# testing the Card Class
+if __name__ == "__main__":
+    colours = 5
+    depth = 2
+    test_card = Card(colours, depth)
+
+    print('Card display:')
+    test_card.show()
+    print('depth:', depth)
+    print('colours:', colours)
+
+    # test reset()
+    print('\nTEST1: test reset()')
+    print('test1: before reset')
+    test_card.show()
+    test_card.reset()
+    print('test1: after reset')
+    test_card.show()
+
+    # test stack()
+    print('\nTEST2: test stack()')
+    print('first stack:')
+    print(test_card.stack(1))
+    if len(test_card.stack(1)) == depth:
+        print('test2: PASSED')
+    else:
+        print('test2: unexpected length of stack')
+        print('test2: FAILED')
