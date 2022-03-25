@@ -70,6 +70,12 @@ class BStack:
         '''
         return len(self.__items)
 
+    def items(self):
+        '''
+        Returns the items of the stack as a list
+        '''
+        return self.__items
+
     def reset(self):
         '''
         Empties the stack
