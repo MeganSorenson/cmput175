@@ -215,33 +215,42 @@ class AbackoStack:
         print(self.get_display_row(indexes))
 
         # display top row
-        print(self.get_display_row(self.__top_row))
+        if card:
+            print('{abacko_top}{card_top:>10}'.format(
+                abacko_top=self.get_display_row(self.__top_row), card_top='card'))
+        else:
+            print(self.get_display_row(self.__top_row))
 
         # display abackostack items by row
         for i in range(self.__depth):
             row_items = ['|']
             for bounded_stack in self.__bounded_stacks:
                 # get stack items
-                stack_items = []
-                for item in bounded_stack.items():
-                    stack_items.append(item)
-                # fill empty spots in stack_items with dots
-                while len(stack_items) != self.__depth:
-                    stack_items.insert(0, '.')
+                stack_items = self.get_stack_items(bounded_stack)
                 # add appropriate stack item to row
                 row_items.append(stack_items[i])
             row_items.append('|')
-            print(self.get_display_row(row_items))
+            if card:
+                # get card row elements and join them
+                card_row = self.get_card_row(i)
+                print('{abacko_row}    {card_row}'.format(
+                    abacko_row=self.get_display_row(row_items), card_row=card_row))
+
+            else:
+                print(self.get_display_row(row_items))
 
         # display bottom row
         bottom = '+' + ('-' * ((self.__stacks * 2) + 1)) + '+'
-        print(bottom)
+        if card:
+            print('{abacko_bottom}{card_bottom:>15} moves'.format(
+                abacko_bottom=bottom, card_bottom=str(self.__moves)))
+        else:
+            print(bottom)
 
-    def get_display_row(self, source, card=False):
+    def get_display_row(self, source):
         '''
         Creates a single row for display of the AbackoStack
         source is a list representing the source of the info for the row
-        card is a bool of whether the card is being drawn or not
         Returns a str representing the row ready for display
         '''
         row = ''
@@ -252,12 +261,50 @@ class AbackoStack:
 
         return row
 
+    def get_stack_items(self, bounded_stack):
+        '''
+        Gathers the items from a stack into a list and fills gaps with dots
+        bounded_stack is the BStack being gathered
+        Returns a list of the stack's items
+        '''
+        stack_items = []
+        for item in bounded_stack.items():
+            stack_items.append(item)
+        # fill empty spots in stack_items with dots
+        while len(stack_items) != self.__depth:
+            stack_items.insert(0, '.')
+
+        return stack_items
+
+    def get_card_row(self, row):
+        '''
+        Creates a single row for display of the card
+        row is an int representing the row being created
+        returns a string representing the card row ready for display
+        '''
+        # gather all stacks
+        card_stacks = []
+        for i in range(self.__stacks):
+            card_stacks.append(card.stack(i + 1))
+        # create card row string using the right element from each card stack
+        card_row = '|'
+        for i in range(len(card_stacks)):
+            card_row += card_stacks[i][row]
+            if i != (len(card_stacks) - 1):  # add space if not last element
+                card_row += ' '
+        card_row += '|'
+
+        return card_row
+
 
 # test the AbackoStack class
 if __name__ == "__main__":
     abacko = AbackoStack(3, 3)
+    card = Card(3, 3)
 
     abacko.show()
+    print()
+    abacko.show(card)
 
     # test moveBead
     print('\nTEST1: test moveBead() with up move in empty spot')
@@ -346,6 +393,7 @@ if __name__ == "__main__":
         print('test9: un-solved abacko returned as solved')
         print('test9: FAILED')
     else:
+        abacko.show(card)
         print('test9: PASSED')
 
     # test reset
