@@ -79,6 +79,44 @@ class Card:
 
         return self.__beads[lower_index:upper_index]
 
+    def replace(self, filename, n):
+        '''
+        Replaces the card's configuration with the info from a given file
+        Assumes that the filename exists
+        filename is a str representing the txt file's name
+        n is an int representing the line of the filename to read
+        returns None
+        '''
+        # check inputs
+        assert isinstance(
+            n, int) and n >= 0, 'Error: n must be an integer greater or equal to 0'
+
+        file = open(filename, 'r')
+        for i in range(n):
+            line = file.readline()
+
+        line = line.strip()
+        self.__beads = line.split(' ')
+
+    def __str__(self):
+        '''
+        Displays unofficial representation of the Card
+        Returns None
+        '''
+        card_string = ''
+
+        index = 0  # keep track of which beadto add to string
+        card_string += '|'
+        for i in range(self.__colours):
+            for j in range(self.__depth):
+                card_string += self.__beads[index]
+                index += 1
+            if i != (self.__colours - 1):
+                card_string += '||'
+        card_string += '|'
+
+        return card_string
+
 
 # testing the Card Class
 if __name__ == "__main__":
@@ -108,3 +146,29 @@ if __name__ == "__main__":
     else:
         print('test2: unexpected length of stack')
         print('test2: FAILED')
+
+    # test initializing with invalid parameters
+    print('\nTEST3: test initialization of Card with invalid parameters')
+    try:
+        Card('a', 2)
+        Card(3, -5)
+    except:
+        print('test3: PASSED')
+    else:
+        print('test3: initialized stack with invalid parameters')
+        print('test3: FAILED')
+
+    # test __str__()
+    print('\nTEST3: testing unofficial string representation')
+    print('test3: card using show()')
+    test_card.show()
+    print('test3: card using print()')
+    print(test_card)
+
+    # test replace
+    print('\nTEST4: testing replace using a known file')
+    print('test4: card before replace')
+    test_card.show()
+    test_card.replace('test_replace.txt', 1)
+    print('test4: card after replace')
+    test_card.show()

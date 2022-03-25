@@ -12,8 +12,8 @@ class BStack:
         size is an int representing the maximum amount of items that can be pushed onto the stack
         '''
         # check inputs
-        assert size >= 0 and isinstance(
-            size, int), 'Error: size must be a positive integer'
+        assert isinstance(
+            size, int) and size >= 0, 'Error: size must be a positive integer'
 
         self.__size = size
         self.__items = []
@@ -177,7 +177,7 @@ if __name__ == "__main__":
         print('test10: stack did not reset')
         print('test10: FAILED')
 
-    # test initializing with wrong
+    # test initializing with wrong parameters
     print('\nTEST11: test initialization of stack with invalid parameters')
     try:
         BStack('a')
