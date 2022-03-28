@@ -232,7 +232,7 @@ class AbackoStack:
             row_items.append('|')
             if card:
                 # get card row elements and join them
-                card_row = self.get_card_row(i)
+                card_row = self.get_card_row(i, card)
                 print('{abacko_row}    {card_row}'.format(
                     abacko_row=self.get_display_row(row_items), card_row=card_row))
 
@@ -270,16 +270,18 @@ class AbackoStack:
         stack_items = []
         for item in bounded_stack.items():
             stack_items.append(item)
+            stack_items.reverse()
         # fill empty spots in stack_items with dots
         while len(stack_items) != self.__depth:
             stack_items.insert(0, '.')
 
         return stack_items
 
-    def get_card_row(self, row):
+    def get_card_row(self, row, card):
         '''
         Creates a single row for display of the card
         row is an int representing the row being created
+        card is a Card object with the rows
         returns a string representing the card row ready for display
         '''
         # gather all stacks
@@ -295,6 +297,12 @@ class AbackoStack:
         card_row += '|'
 
         return card_row
+
+    def get_moves(self):
+        '''
+        Returns how many moves have been completed
+        '''
+        return self.__moves
 
 
 # test the AbackoStack class
