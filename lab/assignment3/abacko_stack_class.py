@@ -163,8 +163,7 @@ class AbackoStack:
         # if empty, move bead
         # if not empty, raise Exception
         if self.__top_row[digit + direction] == '.' and self.__top_row[digit] != '.':
-            bead = self.__top_row[digit]
-            self.__top_row[digit + direction] = bead
+            self.__top_row[digit + direction] = self.__top_row[digit]
             self.__top_row[digit] = '.'
             self.__moves += 1
         else:
@@ -183,10 +182,15 @@ class AbackoStack:
             card, Card), 'Error: card must be an instance of the Card class'
 
         match = True
+        # get instance and configuration stack,
+        # get them on the same order
+        # compare if they are the same
         for i in range(self.__stacks):
-            # these will both be lists
-            instance_stack = self.__bounded_stacks[i].items()
-            instance_stack.reverse()
+            instance_stack = []
+            # reverse list to check with configuration stack
+            for item in self.__bounded_stacks[i].items():
+                instance_stack.insert(0, item)
+
             configuration_stack = card.stack(i + 1)
             if instance_stack != configuration_stack:  # check if they are the same
                 match = False
@@ -210,35 +214,35 @@ class AbackoStack:
         '''
 
         # display indexes at top
-        indexes = []
-        for i in range(len(self.__top_row)):
-            indexes.append(i)
-        print(self.get_display_row(indexes))
+        for index in range(len(self.__top_row)):
+            print(index, end=' ')
+
+        print()
 
         # display top row
+        for item in self.__top_row:
+            print(item, end=' ')
         if card:
-            print('{abacko_top}{card_top:>10}'.format(
-                abacko_top=self.get_display_row(self.__top_row), card_top='card'))
-        else:
-            print(self.get_display_row(self.__top_row))
+            print('{card:>9}'.format(card='card'))
 
         # display abackostack items by row
-        for i in range(self.__depth):
-            row_items = ['|']
+        for index in range(self.__stacks - 1, -1, -1):
+            print('|', end=' ')
             for bounded_stack in self.__bounded_stacks:
-                # get stack items
-                stack_items = self.get_stack_items(bounded_stack)
-                # add appropriate stack item to row
-                row_items.append(stack_items[i])
-            row_items.append('|')
+                items = []
+                for bead in bounded_stack.items():
+                    items.append(bead)
+                # fill tems with dots if not full
+                while len(items) != self.__depth:
+                    items.append('.')
+                print(items[index], end=' ')
+            print('|', end='')
+            # print card row if necessary
             if card:
-                # get card row elements and join them
-                card_row = self.get_card_row(i, card)
-                print('{abacko_row}    {card_row}'.format(
-                    abacko_row=self.get_display_row(row_items), card_row=card_row))
-
+                row = self.get_card_row(self.__stacks - index - 1, card)
+                print('    {row}'.format(row=row))
             else:
-                print(self.get_display_row(row_items))
+                print()
 
         # display bottom row
         bottom = '+' + ('-' * ((self.__stacks * 2) + 1)) + '+'
@@ -247,36 +251,6 @@ class AbackoStack:
                 abacko_bottom=bottom, card_bottom=str(self.__moves)))
         else:
             print(bottom)
-
-    def get_display_row(self, source):
-        '''
-        Creates a single row for display of the AbackoStack
-        source is a list representing the source of the info for the row
-        Returns a str representing the row ready for display
-        '''
-        row = ''
-        for i in range(self.__stacks + 2):
-            row += str(source[i])
-            if i != (self.__stacks + 1):
-                row += ' '
-
-        return row
-
-    def get_stack_items(self, bounded_stack):
-        '''
-        Gathers the items from a stack into a list and fills gaps with dots
-        bounded_stack is the BStack being gathered
-        Returns a list of the stack's items
-        '''
-        stack_items = []
-        for item in bounded_stack.items():
-            stack_items.append(item)
-            stack_items.reverse()
-        # fill empty spots in stack_items with dots
-        while len(stack_items) != self.__depth:
-            stack_items.insert(0, '.')
-
-        return stack_items
 
     def get_card_row(self, row, card):
         '''
