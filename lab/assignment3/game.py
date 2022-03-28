@@ -15,7 +15,7 @@ def get_game_specs():
     number_of_colours = 0
     while number_of_colours < 2 or number_of_colours > 5:
         number_of_colours = input(
-            'Please enter your desired number of colours for the game (2-5) !must be integer! > ')
+            'Please enter the number of stacks between 2 and 5: ')
         # check if integer entry and don't end program if not
         try:
             number_of_colours = int(number_of_colours)
@@ -27,7 +27,7 @@ def get_game_specs():
     depth_of_stacks = 0
     while depth_of_stacks < 2 or depth_of_stacks > 4:
         depth_of_stacks = input(
-            'Please enter your desired depth of stack for the game (2-4) !must be integer! >')
+            'Please enter the depth of stacks between 2 and 4: ')
         # check if integer entry and don't end program if not
         try:
             depth_of_stacks = int(depth_of_stacks)
@@ -45,13 +45,14 @@ def get_user_action(abacko, win, continue_game):
     returns a tuple of boolean variable representing win, continue_game
     '''
     action = input(
-        'Enter your move(s) (separated by spaces) [Q for quit and R to reset] >')
+        'Enter your move(s) (separated by spaces) [Q for quit and R to reset]:')
     # reset or quit if  user asks
     if action.upper() == 'R':
         abacko.reset()
     elif action.upper() == 'Q':
         win = True
         continue_game = False
+        print('Quit game, goodbye...')
     # otherwise, collect actions
     # for each action, check if there has already been an error in the sequenc of actions
     #   (no more actions of that sequence will then be run)
@@ -64,7 +65,7 @@ def get_user_action(abacko, win, continue_game):
                 try:
                     abacko.moveBead(action)
                 except:
-                    print('\nInvalid Move... stopped here...')
+                    print('Invalid move')
                     error = True
 
     return (win, continue_game)
@@ -83,12 +84,13 @@ def check_win(abacko, card, win, continue_game):
 
         ask_play_again = True
         while ask_play_again:
-            play_again = input('Would you like to play another round? Y/n > ')
+            play_again = input('Would you like another game? [Y/N]: ')
             if play_again.upper() == 'N':
                 continue_game = False  # ends game loop
                 ask_play_again = False
             elif play_again.upper() != 'Y':
                 print('Invalid input:', play_again)
+                print()
 
             win = True  # ends action loop
 
