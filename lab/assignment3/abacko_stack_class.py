@@ -186,6 +186,7 @@ class AbackoStack:
         for i in range(self.__stacks):
             # these will both be lists
             instance_stack = self.__bounded_stacks[i].items()
+            instance_stack.reverse()
             configuration_stack = card.stack(i + 1)
             if instance_stack != configuration_stack:  # check if they are the same
                 match = False
