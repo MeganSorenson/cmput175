@@ -91,6 +91,8 @@ def check_win(abacko, card, win, continue_game):
             elif play_again.upper() != 'Y':
                 print('Invalid input:', play_again)
                 print()
+            else:
+                ask_play_again = False
 
             win = True  # ends action loop
 
@@ -130,10 +132,9 @@ def main():
             continue_game = game_variables[1]
 
             # display game state
-            abacko.show(card)
-            # display moves
-            print('Moves:', str(abacko.get_moves()))
-            print()
+            if continue_game:
+                abacko.show(card)
+                print()
 
             # check if game is won and ask to play again
             # game_variables is a tuple of win, continue_game

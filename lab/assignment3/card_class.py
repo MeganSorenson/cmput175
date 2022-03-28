@@ -29,12 +29,11 @@ class Card:
         '''
         import random
 
-        #alphabet = list('ABCDEFGHIJKLMNOPQRSTUV')
+        alphabet = list('ABCDEFGHIJKLMNOPQRSTUV')
         # choose appropriate number of colour labels and multiple by depth of Card
         # the shuffle using imported function shuffle
-        #beads = alphabet[:self.__colours] * self.__depth
-        # random.shuffle(beads)
-        beads = ['B', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C']
+        beads = alphabet[:self.__colours] * self.__depth
+        random.shuffle(beads)
 
         return beads
 
