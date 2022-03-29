@@ -103,7 +103,7 @@ Invalid move
 | A B C |    |A B C|
 +-------+             2 moves
 
-Enter your move(s) [Q for quit and R to reset]: 3u 3l 2l 1l 1u 1r 2r
+Enter your move(s) [Q for quit and R to reset]: 3u 3l 2l 1l 1u 
 0 1 2 3 4
 C A . . C      card
 | . B . |    |C A C|
@@ -254,5 +254,3 @@ Enter your move(s) [Q for quit and R to reset]: R
 +-------+             0 moves
 
 Enter your move(s) [Q for quit and R to reset]: Q
-Quit game, goodbye...
-

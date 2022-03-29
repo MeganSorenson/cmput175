@@ -1,6 +1,10 @@
-from abacko_stack_class import AbackoStack
-from bounded_stack import BStack
-from card_class import Card
+# Abacko Stack Game
+# uses user-input to move beads around a board to match a random configuration card
+# uses the classes in AbackoStack.py to play the game
+# author: Megan Sorenson
+
+from AbackoStack import Card
+from AbackoStack import AbackoStack
 
 # user-defined functions
 
@@ -60,7 +64,7 @@ def get_user_action(abacko, win, continue_game):
     else:
         actions = action.split(' ')
         error = False
-        for action in actions:
+        for action in actions[0:5]:
             if not error:
                 try:
                     abacko.moveBead(action)
@@ -107,9 +111,9 @@ def main():
     '''
     # initial game variables
     continue_game = True
-    win = False
     # game loop for the game
     while continue_game:
+        win = False
         # get user input for their desired game size
         # first item is number of colours, second is depth of stacks
         specs = get_game_specs()
