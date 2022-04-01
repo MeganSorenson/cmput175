@@ -439,7 +439,8 @@ class AbackoStack:
             print()
 
         # display abackostack items by row
-        for index in range(self.__stacks - 1, -1, -1):
+        item_index = self.__depth - 1  # keep track of index for printing stack items
+        for index in range(self.__depth - 1, -1, -1):
             print('|', end=' ')
             for bounded_stack in self.__bounded_stacks:
                 items = []
@@ -479,7 +480,7 @@ class AbackoStack:
         # create card row string using the right element from each card stack
         card_row = '|'
         for i in range(len(card_stacks)):
-            card_row += card_stacks[i][row]
+            card_row += card_stacks[i][row - 1]
             if i != (len(card_stacks) - 1):  # add space if not last element
                 card_row += ' '
         card_row += '|'

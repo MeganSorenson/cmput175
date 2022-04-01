@@ -109,8 +109,9 @@ if __name__ == "__main__":
     descending_list = sorted(random_list, reverse=True)
 
     # Calculate the execution time to sort a list of random numbers #
+    random_list_ = random_list.copy()  # make a copy to save the unsorted list
     start_sel = time.time()
-    recursive_selection_sort(random_list, list_len)
+    recursive_selection_sort(random_list_, list_len)
     end_sel = time.time()
 
     start_merge = time.time()
@@ -123,8 +124,9 @@ if __name__ == "__main__":
     print(' - Recursive merge sort: {}'.format(end_merge - start_merge))
 
     # Calculate the execution time to sort a list of intergers already sorted in ascending order #
+    ascending_list_ = ascending_list.copy()
     start_sel = time.time()
-    recursive_selection_sort(ascending_list, list_len)
+    recursive_selection_sort(ascending_list_, list_len)
     end_sel = time.time()
 
     start_merge = time.time()
@@ -137,8 +139,9 @@ if __name__ == "__main__":
     print(' - Recursive merge sort: {}'.format(end_merge - start_merge))
 
     # Calculate the execution time to sort a list of intergers already sorted in descending order #
+    descending_list_ = descending_list.copy()
     start_sel = time.time()
-    recursive_selection_sort(descending_list, list_len)
+    recursive_selection_sort(descending_list_, list_len)
     end_sel = time.time()
 
     start_merge = time.time()
